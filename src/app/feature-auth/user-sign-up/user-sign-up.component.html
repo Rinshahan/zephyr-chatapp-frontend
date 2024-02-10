@@ -1,3 +1,32 @@
-<div class="main-container">
-  <div>hai</div>
-</div>
+<!--content-wrapper-->
+<main class="bg-slate-700 mt-3 h-screen w-screen flex align-center justify-center">
+  <div class=" flex align-center justify-center mr-[100px]">
+    <!-- <img class="max-h-[500px] max-w-[700px] mt-[100px]" src="assets/singup-bg.jpg" alt=""> -->
+  </div>
+  <div class=" flex items-center justify center "> <!--Form div-->
+    <form [formGroup]="reactiveForm" (ngSubmit)="onFormSubmitted()">
+      <div>
+        <input type="text" formControlName="username" placeholder="Enter Your Username">
+      </div>
+      <div>
+        <input type="email" formControlName="email" placeholder="Enter Your Email Address">
+      </div>
+      <div>
+        <input type="number" formControlName="phone" placeholder="Enter Your Phone Number">
+      </div>
+      <div>
+        <input type="file">
+      </div>
+      <div>
+        <input type="password" formControlName="password" placeholder="Enter Your password">
+      </div>
+      <div>
+        <input type="password" formControlName="confirmPassword" placeholder="Confirm Password">
+      </div>
+      <div>
+        <input type="submit"
+          class="cursor-pointer text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+      </div>
+    </form>
+  </div>
+</main>
