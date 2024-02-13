@@ -4,7 +4,7 @@ interface User {
   email: string,
   phone: string,
   password: string,
-  profilepic: string,
+  image: string,
   accountCreatedDate?: Date,
   isDeleted?: boolean,
   otp?: string,
