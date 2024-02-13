@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { UserSideBarComponent } from "./user-side-bar/user-side-bar.component";
 
 const routes: Routes = [
-  { path: 'users', component: UserSideBarComponent },
+  { path: '', component: UserSideBarComponent },
 
 ]
 
