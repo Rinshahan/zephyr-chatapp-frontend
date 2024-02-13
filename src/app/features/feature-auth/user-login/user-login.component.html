@@ -1,0 +1,14 @@
+<div>
+  <form (ngSubmit)="onFormSubmitted()" #loginForm="ngForm">
+    <div>
+      <input type="email" style="border: 1px solid black;" name="email" ngModel #email="ngModel" placeholder="email">
+    </div>
+    <div>
+      <input style="border: 1px solid black;" type="password" name="password" ngModel #password="ngModel"
+        placeholder="password">
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
