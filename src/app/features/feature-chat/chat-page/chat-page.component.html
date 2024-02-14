@@ -1,0 +1,8 @@
+<div class="flex">
+  <div class="left">
+    <app-user-side-bar (userSelected)="selectedUser = $event"></app-user-side-bar>
+  </div>
+  <div class="right" style="margin-left: 100px;">
+    <app-chat-screen [selectedUser]="selectedUser"></app-chat-screen>
+  </div>
+</div>

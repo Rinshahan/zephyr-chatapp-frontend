@@ -1,6 +1,6 @@
-<div class="flex">
-  <div *ngFor="let user of users" style="cursor: pointer">
-    <ul>{{user.username}}</ul>
-    <ul>{{user.email}}</ul>
-  </div>
+<div *ngFor="let user of users" style="cursor: pointer; background-color: aqua;border: 1px solid black;"
+  (click)="onUserSelected(user)">
+  <img style="height: 50x;width: 50px;border-radius: 25px;" [src]="user.image" alt="">
+  <ul>{{user.username}}</ul>
+  <ul>{{user.email}}</ul>
 </div>
