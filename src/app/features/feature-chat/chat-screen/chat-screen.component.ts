@@ -38,11 +38,13 @@ export class ChatScreenComponent implements OnInit, OnChanges {
   }
 
   sendMessage() {
-    this.chatService.sendMessages(this.selectedUser._id, this.send).subscribe((res) => {
-      console.log(res);
-    }, (err) => {
-      console.log(err)
-    })
+    console.log(this.send);
+
+    // this.chatService.sendMessages(this.selectedUser._id, this.send).subscribe((res) => {
+    //   console.log(res);
+    // }, (err) => {
+    //   console.log(err)
+    // })
   }
 
 }
