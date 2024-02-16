@@ -18,3 +18,8 @@ export interface ChatResponse {
     updatedAt: any,
   }]
 }
+
+
+export interface decodedToken {
+  _id: string
+}
