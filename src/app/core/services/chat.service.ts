@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ChatResponse } from '../models/apis.model';
@@ -9,8 +9,9 @@ import { ChatResponse } from '../models/apis.model';
 export class ChatService {
   constructor(private http: HttpClient) { }
 
-  sendMessages(userToChatId: string, message: string): Observable<ChatResponse> {
-    return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, message)
+  sendMessages(userToChatId: string, { message }): Observable<ChatResponse> {
+    //const headers = new HttpHeaders({ 'Content-Type': 'application/json' })
+    return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
 
   getMessages(userToChatId: string): Observable<ChatResponse> {

@@ -46,7 +46,8 @@ export class ChatScreenComponent implements OnInit, OnChanges {
 
   sendMessage() {
     const message: string = this.form.value.message
-    this.chatService.sendMessages(this.selectedUser._id, message).subscribe((res) => {
+    const messageData = { message }
+    this.chatService.sendMessages(this.selectedUser._id, messageData).subscribe((res) => {
       console.log(res);
     }, (err) => {
       console.log(err)

@@ -3,12 +3,13 @@
     <img style="height: 50px;width: 50px;border-radius: 25px;display: inline;" [src]="selectedUser.image" alt="">
     <h4 class="ml-[2px]" style="display: inline;">{{selectedUser.username}}</h4>
   </div>
-  <div *ngFor="let message of messages.message">
+  <div *ngFor="let message of messages?.message">
     <!--Display the message send the by another USer-->
     <ng-container *ngIf="message.sender===selectedUser._id">
       <p>{{message.message}}</p>
     </ng-container>
     <ng-container *ngIf="message.sender===currentUserId">
+      <p class="ml-[100px]">{{message.message}}</p>
     </ng-container>
   </div>
 
