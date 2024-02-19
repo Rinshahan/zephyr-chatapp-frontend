@@ -8,7 +8,7 @@
     <ng-container *ngIf="message.sender===selectedUser._id">
       <p>{{message.message}}</p>
     </ng-container>
-    <ng-container *ngIf="message.sender===currentUserId">
+    <ng-container *ngIf="message.sender===currentUserId && message.reciever===selectedUser._id">
       <p class="ml-[100px]">{{message.message}}</p>
     </ng-container>
   </div>
