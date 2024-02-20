@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { AuthorizationInterceptor } from './core/interceptors/authorization.interceptor';
+import { ChatService } from './core/services/chat.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,7 +15,8 @@ import { AuthorizationInterceptor } from './core/interceptors/authorization.inte
     HttpClientModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true },
+    ChatService
   ],
   bootstrap: [AppComponent]
 })
