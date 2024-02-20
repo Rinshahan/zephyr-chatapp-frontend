@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Socket, io } from 'socket.io-client';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'frontend';
+
 }

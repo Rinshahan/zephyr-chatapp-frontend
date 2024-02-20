@@ -7,9 +7,11 @@ import { ChatResponse } from '../models/apis.model';
   providedIn: 'root'
 })
 export class ChatService {
-  constructor(private http: HttpClient) { }
 
-  sendMessages(userToChatId: string, { message }): Observable<ChatResponse> {
+  constructor(private http: HttpClient) {
+  }
+
+  sendMessages(userToChatId: string, { message }) {
     //const headers = new HttpHeaders({ 'Content-Type': 'application/json' })
     return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
