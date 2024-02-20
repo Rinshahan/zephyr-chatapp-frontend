@@ -14,7 +14,7 @@ export class ChatService {
   }
 
   sendMessages(userToChatId: string, { message }) {
-
+    this.socket.emit("sendMessage", { userToChatId, message })
     return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
 
