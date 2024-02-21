@@ -1,9 +1,8 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ChatResponse, decodedToken } from 'src/app/core/models/apis.model';
+import { ChatResponse } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
 import { ChatService } from 'src/app/core/services/chat.service';
-import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'app-chat-screen',
   templateUrl: './chat-screen.component.html',
@@ -36,6 +35,7 @@ export class ChatScreenComponent implements OnInit, OnChanges {
         this.currentUserId = currentUser
         this.messages = res
         console.log(this.messages.message);
+        this.subscribeToMessages()
       }, (err) => {
         console.log(err)
       })
@@ -57,7 +57,8 @@ export class ChatScreenComponent implements OnInit, OnChanges {
   sendMessage() {
     const message: string = this.form.value.message
     const messageData = { message }
-    this.chatService.sendMessages(this.currentUserId, this.selectedUser._id, messageData)
+    const currentUser = localStorage.getItem('currentUserId')
+    this.chatService.sendMessages(currentUser, this.selectedUser._id, messageData)
     this.form.reset()
   }
 
