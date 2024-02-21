@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ChatResponse, decodedToken } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
@@ -15,13 +15,14 @@ export class ChatScreenComponent implements OnInit, OnChanges {
   @ViewChild('messageForm') form: NgForm
   currentUserId: string
   constructor(private chatService: ChatService) {
-
   }
 
   ngOnInit(): void {
     if (this.selectedUser) {
       this.chatService.getMessages(this.selectedUser._id).subscribe((res) => {
         console.log(res)
+        this.messages = res
+        this.subscribeToMessages()
       }, (err) => {
         console.log(err)
       })
@@ -41,18 +42,27 @@ export class ChatScreenComponent implements OnInit, OnChanges {
     }
   }
 
+  private subscribeToMessages(): void {
+    this.chatService.subscribeToMessages().subscribe((message) => {
+      console.log(message)
+      //add recieved message to messages array
+      this.messages.message.push(message)
+    }, (err) => {
+      console.log(err)
+    })
+  }
 
 
 
   sendMessage() {
     const message: string = this.form.value.message
     const messageData = { message }
-    this.chatService.sendMessages(this.selectedUser._id, messageData).subscribe((res) => {
-      console.log(res);
-    }, (err) => {
-      console.log(err)
-    })
+    this.chatService.sendMessages(this.currentUserId, this.selectedUser._id, messageData)
     this.form.reset()
   }
 
+
+  // ngOnDestroy(): void {
+  //   this.chatService.getMessages(this.selectedUser._id).subscribe
+  // }
 }

@@ -13,15 +13,23 @@ export class ChatService {
     this.socket = io("http://localhost:3000")
   }
 
-  sendMessages(userToChatId: string, { message }) {
-    this.socket.emit("sendMessage", { userToChatId, message })
-    return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
+  sendMessages(sender, userToChatId: string, { message }) {
+    this.socket.emit("sendMessage", { sender, userToChatId, message })
+
+    //return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
 
   getMessages(userToChatId: string): Observable<ChatResponse> {
     return this.http.get<ChatResponse>(`http://localhost:3000/api/messages/${userToChatId}`)
   }
 
+  subscribeToMessages(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on("messageRecieved", (data) => {
+        observer.next(data)
+      })
+    })
+  }
 
 
 }
