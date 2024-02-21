@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ChatResponse } from '../models/apis.model';
 import io, { Socket } from "socket.io-client"
 
@@ -15,7 +15,6 @@ export class ChatService {
 
   sendMessages(sender, userToChatId: string, { message }) {
     this.socket.emit("sendMessage", { sender, userToChatId, message })
-
     //return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
 
@@ -23,11 +22,9 @@ export class ChatService {
     return this.http.get<ChatResponse>(`http://localhost:3000/api/messages/${userToChatId}`)
   }
 
-  subscribeToMessages(): Observable<any> {
-    return new Observable((observer) => {
-      this.socket.on("messageRecieved", (data) => {
-        observer.next(data)
-      })
+  recieveMessage() {
+    this.socket.on("newMessage", (data) => {
+      console.log(data)
     })
   }
 

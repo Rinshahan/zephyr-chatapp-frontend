@@ -7,9 +7,11 @@
     <!--Display the message send the by another USer-->
     <ng-container *ngIf="message.sender===selectedUser._id">
       <p>{{message.message}}</p>
+      <small>{{message.createdAt|date:'shortTime'}}</small>
     </ng-container>
     <ng-container *ngIf="message.sender===currentUserId && message.reciever===selectedUser._id">
       <p class="ml-[100px]">{{message.message}}</p>
+      <small class="ml-[100px]">{{message.createdAt|date:'shortTime'}}</small>
     </ng-container>
   </div>
 
