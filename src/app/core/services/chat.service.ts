@@ -9,6 +9,7 @@ import io, { Socket } from "socket.io-client"
 })
 export class ChatService {
   private socket: Socket
+  private messageSubject = new Subject<ChatResponse>()
   constructor(private http: HttpClient) {
     this.socket = io("http://localhost:3000")
   }
@@ -26,6 +27,13 @@ export class ChatService {
     this.socket.on("newMessage", (data) => {
       console.log(data)
     })
+  }
+
+  subscribeToMessage(): Observable<ChatResponse> {
+    this.socket.on("newMessage", (data) => {
+      this.messageSubject.next(data)
+    })
+    return this.messageSubject.asObservable()
   }
 
 

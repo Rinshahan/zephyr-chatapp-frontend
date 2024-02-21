@@ -36,10 +36,7 @@ export class ChatScreenComponent implements OnInit {
       this.chatService.getMessages(changes['selectedUser'].currentValue._id).subscribe((res) => {
         const currentUser = localStorage.getItem('currentUserId')
         this.currentUserId = currentUser
-        this.socket.on('newMessage', (data) => {
-          this.messages.message.push(data)
-          console.log(this.messages)
-        })
+        this.chatService.recieveMessage()
       }, (err) => {
         console.log(err)
       })

@@ -8,7 +8,6 @@ export interface UserResponse {
 }
 
 export interface ChatResponse {
-  status: string,
   message: [{
     _id: string,
     sender: string,
