@@ -8,13 +8,13 @@ import io, { Socket } from "socket.io-client"
   providedIn: 'root'
 })
 export class ChatService {
-  private socket: Socket
+  socket: Socket
   private messageSubject = new Subject<ChatSocket>()
   constructor(private http: HttpClient) {
     this.socket = io("http://localhost:3000")
   }
 
-  sendMessages(sender: string, userToChatId: string, message: string) {
+  sendMessages(sender: string, userToChatId: string, message: string): void {
     this.socket.emit("sendMessage", { sender, userToChatId, message })
     //return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
@@ -23,11 +23,6 @@ export class ChatService {
     return this.http.get<ChatResponse>(`http://localhost:3000/api/messages/${userToChatId}`)
   }
 
-  recieveMessage() {
-    this.socket.on("newMessage", (data) => {
-      console.log(data)
-    })
-  }
 
   subscribeToMessage(): Observable<ChatSocket> {
     this.socket.on("newMessage", (data) => {

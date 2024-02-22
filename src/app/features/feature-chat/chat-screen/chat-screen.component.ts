@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChil
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
-import { ChatResponse } from 'src/app/core/models/apis.model';
+import { ChatResponse, ChatSocket } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
 import { ChatService } from 'src/app/core/services/chat.service';
 @Component({
@@ -10,58 +10,63 @@ import { ChatService } from 'src/app/core/services/chat.service';
   templateUrl: './chat-screen.component.html',
   styleUrls: ['./chat-screen.component.css']
 })
-export class ChatScreenComponent implements OnInit, OnChanges, OnDestroy {
-  socket: Socket
+export class ChatScreenComponent implements OnChanges, OnDestroy {
   @Input() selectedUser: User
   messages: ChatResponse
   @ViewChild('messageForm') form: NgForm
   currentUserId: string
   messageSubscription: Subscription
   constructor(private chatService: ChatService) {
-    this.socket = io("http://localhost:3000")
   }
 
-  ngOnInit(): void {
-    if (this.selectedUser) {
-      this.chatService.getMessages(this.selectedUser._id).subscribe((res) => {
-        console.log(res)
-        this.messages = res
-      }, (err) => {
-        console.log(err)
-      })
-    }
-  }
 
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedUser'] && changes['selectedUser'].currentValue) {
-      this.chatService.getMessages(changes['selectedUser'].currentValue._id).subscribe((res) => {
+      // unsubscribe if any previous subscription
+      if (this.messageSubscription) {
+        this.messageSubscription.unsubscribe()
+      }
+      // Get any previous message from the DB if
+      this.chatService.getMessages(changes['selectedUser'].currentValue._id).subscribe((res: ChatResponse) => {
+        // getting the current logged userID
         const currentUser = localStorage.getItem('currentUserId')
         this.currentUserId = currentUser
-        this.messages = res
+        if (!res.message || !res.message) {
+          this.messages = { message: [] }
+        } else {
+          this.messages = res
+        }
       }, (err) => {
         console.log(err)
-      });
-      this.chatService.subscribeToMessage().subscribe((message) => {
+        this.messages = { message: [] }
+      })
+
+      // subscribing the observable that returns the message that sended (contains event of socket.io)
+      this.messageSubscription = this.chatService.subscribeToMessage().subscribe((message: ChatSocket) => {
         console.log(message)
-        if (message.reciever === this.selectedUser._id) {
-          this.messages.message.push(message)
+        if (message.reciever === this.selectedUser._id || message.sender === this.selectedUser._id) {
+          if (!this.messages.message) {
+            this.messages = { message: [] }
+          } else {
+            this.messages.message.push(message)
+          }
+
         }
       })
     }
   }
 
-
-
-
-
+  // send message method contains socket.io event 
   sendMessage() {
     const message: string = this.form.value.message
     const currentUser = localStorage.getItem('currentUserId')
+
     this.chatService.sendMessages(currentUser, this.selectedUser._id, message)
     this.form.reset()
   }
 
+  // unsunbscribe to avoid too many subscription and memory leakage
   ngOnDestroy(): void {
     if (this.messageSubscription) {
       this.messageSubscription.unsubscribe()

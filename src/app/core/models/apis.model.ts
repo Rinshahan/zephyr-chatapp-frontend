@@ -8,14 +8,7 @@ export interface UserResponse {
 }
 
 export interface ChatResponse {
-  message: [{
-    _id: string,
-    sender: string,
-    reciever: string,
-    message: string,
-    createdAt?: Date,
-    updatedAt?: Date,
-  }]
+  message: ChatSocket[]
 }
 
 export interface ChatSocket {

@@ -5,7 +5,7 @@
   </div>
   <div *ngFor="let message of messages?.message">
     <!--Display the message send the by another USer-->
-    <ng-container *ngIf="message.sender===selectedUser._id">
+    <ng-container *ngIf="message.sender===selectedUser._id && message.reciever===currentUserId">
       <p>{{message.message}}</p>
       <small>{{message.createdAt|date:'shortTime'}}</small>
     </ng-container>
