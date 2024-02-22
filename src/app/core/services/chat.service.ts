@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { ChatResponse } from '../models/apis.model';
+import { ChatResponse, ChatSocket } from '../models/apis.model';
 import io, { Socket } from "socket.io-client"
 
 @Injectable({
@@ -9,12 +9,12 @@ import io, { Socket } from "socket.io-client"
 })
 export class ChatService {
   private socket: Socket
-  private messageSubject = new Subject<ChatResponse>()
+  private messageSubject = new Subject<ChatSocket>()
   constructor(private http: HttpClient) {
     this.socket = io("http://localhost:3000")
   }
 
-  sendMessages(sender, userToChatId: string, { message }) {
+  sendMessages(sender: string, userToChatId: string, message: string) {
     this.socket.emit("sendMessage", { sender, userToChatId, message })
     //return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
@@ -29,11 +29,15 @@ export class ChatService {
     })
   }
 
-  subscribeToMessage(): Observable<ChatResponse> {
+  subscribeToMessage(): Observable<ChatSocket> {
     this.socket.on("newMessage", (data) => {
       this.messageSubject.next(data)
     })
     return this.messageSubject.asObservable()
+  }
+
+  unSubscribeFromMessages(): void {
+    this.socket.off("newMessage")
   }
 
 

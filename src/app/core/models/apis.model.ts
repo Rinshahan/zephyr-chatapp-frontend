@@ -13,9 +13,18 @@ export interface ChatResponse {
     sender: string,
     reciever: string,
     message: string,
-    createdAt: any,
-    updatedAt: any,
+    createdAt?: Date,
+    updatedAt?: Date,
   }]
+}
+
+export interface ChatSocket {
+  _id: string,
+  sender: string,
+  reciever: string,
+  message: string,
+  createdAt: Date,
+  updatedAt: Date
 }
 
 

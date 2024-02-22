@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 import { ChatResponse } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
@@ -9,12 +10,13 @@ import { ChatService } from 'src/app/core/services/chat.service';
   templateUrl: './chat-screen.component.html',
   styleUrls: ['./chat-screen.component.css']
 })
-export class ChatScreenComponent implements OnInit {
+export class ChatScreenComponent implements OnInit, OnChanges, OnDestroy {
   socket: Socket
   @Input() selectedUser: User
   messages: ChatResponse
   @ViewChild('messageForm') form: NgForm
   currentUserId: string
+  messageSubscription: Subscription
   constructor(private chatService: ChatService) {
     this.socket = io("http://localhost:3000")
   }
@@ -36,9 +38,15 @@ export class ChatScreenComponent implements OnInit {
       this.chatService.getMessages(changes['selectedUser'].currentValue._id).subscribe((res) => {
         const currentUser = localStorage.getItem('currentUserId')
         this.currentUserId = currentUser
-        this.chatService.recieveMessage()
+        this.messages = res
       }, (err) => {
         console.log(err)
+      });
+      this.chatService.subscribeToMessage().subscribe((message) => {
+        console.log(message)
+        if (message.reciever === this.selectedUser._id) {
+          this.messages.message.push(message)
+        }
       })
     }
   }
@@ -49,12 +57,17 @@ export class ChatScreenComponent implements OnInit {
 
   sendMessage() {
     const message: string = this.form.value.message
-    const messageData = { message }
     const currentUser = localStorage.getItem('currentUserId')
-    this.chatService.sendMessages(currentUser, this.selectedUser._id, messageData)
+    this.chatService.sendMessages(currentUser, this.selectedUser._id, message)
     this.form.reset()
   }
 
+  ngOnDestroy(): void {
+    if (this.messageSubscription) {
+      this.messageSubscription.unsubscribe()
+    }
+    this.chatService.unSubscribeFromMessages()
+  }
 
 
 }
