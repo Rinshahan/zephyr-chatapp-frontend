@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ChatResponse, ChatSocket } from '../models/apis.model';
 import io, { Socket } from "socket.io-client"
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +18,7 @@ export class ChatService {
     //return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
 
-  getMessages(userToChatId: string): Observable<ChatResponse> {
+  getMessages(userToChatId: string) {
     return this.http.get<ChatResponse>(`http://localhost:3000/api/messages/${userToChatId}`)
   }
 

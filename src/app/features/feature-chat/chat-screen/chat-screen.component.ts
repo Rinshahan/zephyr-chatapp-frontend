@@ -30,30 +30,26 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
         this.messageSubscription.unsubscribe()
       }
       // Get any previous message from the DB if
-      this.chatService.getMessages(changes['selectedUser'].currentValue._id).subscribe((res: ChatResponse) => {
-        // getting the current logged userID
-        const currentUser = localStorage.getItem('currentUserId')
-        this.currentUserId = currentUser
-        if (!res.message || !res.message) {
-          console.log("hai")
+      this.chatService.getMessages(changes['selectedUser'].currentValue._id)
+        .subscribe((res: ChatResponse) => {
+          // getting the current logged userID
+          const currentUser = localStorage.getItem('currentUserId')
+          this.currentUserId = currentUser
+          if (!res.message || !res.message) {
+            this.messages = { message: [] }
+          } else {
+            this.messages = res
+          }
+        }, (err) => {
+          console.log(err)
           this.messages = { message: [] }
-        } else {
-          this.messages = res
-        }
-      }, (err) => {
-        console.log(err)
-        this.messages = { message: [] }
-      })
+        })
 
       // subscribing the observable that returns the message that sended (contains event of socket.io)
       this.messageSubscription = this.chatService.subscribeToMessage().subscribe((message: ChatSocket) => {
         console.log(message)
         if (message.reciever === this.selectedUser._id || message.sender === this.selectedUser._id) {
-          if (!this.messages.message) {
-            this.messages = { message: [] }
-          } else {
-            this.messages.message.push(message)
-          }
+          this.messages.message.push(message)
         }
       })
 
