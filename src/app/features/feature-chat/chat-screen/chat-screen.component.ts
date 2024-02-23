@@ -16,7 +16,9 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
   @ViewChild('messageForm') form: NgForm
   currentUserId: string
   messageSubscription: Subscription
+
   constructor(private chatService: ChatService) {
+
   }
 
 
@@ -33,6 +35,7 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
         const currentUser = localStorage.getItem('currentUserId')
         this.currentUserId = currentUser
         if (!res.message || !res.message) {
+          console.log("hai")
           this.messages = { message: [] }
         } else {
           this.messages = res
@@ -51,17 +54,18 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
           } else {
             this.messages.message.push(message)
           }
-
         }
       })
+
     }
   }
+
+
 
   // send message method contains socket.io event 
   sendMessage() {
     const message: string = this.form.value.message
     const currentUser = localStorage.getItem('currentUserId')
-
     this.chatService.sendMessages(currentUser, this.selectedUser._id, message)
     this.form.reset()
   }
@@ -73,6 +77,4 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
     }
     this.chatService.unSubscribeFromMessages()
   }
-
-
 }
