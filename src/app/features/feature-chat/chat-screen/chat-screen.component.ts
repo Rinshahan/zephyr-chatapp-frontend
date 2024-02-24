@@ -42,7 +42,7 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
           }
         }, (err) => {
           console.log(err)
-          this.messages = { message: [] }
+          // this.messages = { message: [] }
         })
 
       // subscribing the observable that returns the message that sended (contains event of socket.io)
