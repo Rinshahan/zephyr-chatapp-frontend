@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { Socket, io } from 'socket.io-client';
+import { Subscription, filter } from 'rxjs';
 import { ChatResponse, ChatSocket } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
 import { ChatService } from 'src/app/core/services/chat.service';
@@ -21,14 +20,15 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
 
   }
 
-
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedUser'] && changes['selectedUser'].currentValue) {
-      // unsubscribe if any previous subscription
-      if (this.messageSubscription) {
-        this.messageSubscription.unsubscribe()
+      // join room
+      const currentUser = localStorage.getItem('currentUserId')
+      if (currentUser && this.selectedUser._id) {
+        const normalizedRoomId = `hai`
+        this.chatService.joinRoom(normalizedRoomId)
       }
+
       // Get any previous message from the DB if
       this.chatService.getMessages(changes['selectedUser'].currentValue._id)
         .subscribe((res: ChatResponse) => {
@@ -46,12 +46,13 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
         })
 
       // subscribing the observable that returns the message that sended (contains event of socket.io)
-      this.messageSubscription = this.chatService.subscribeToMessage().subscribe((message: ChatSocket) => {
-        console.log(message)
-        if (message.reciever === this.selectedUser._id || message.sender === this.selectedUser._id) {
-          this.messages.message.push(message)
-        }
-      })
+      this.messageSubscription = this.chatService.subscribeToMessage()
+        .subscribe((message: ChatSocket) => {
+          if (message.sender === this.selectedUser._id || message.reciever === this.selectedUser._id) {
+            console.log(message)
+            this.messages.message.push(message)
+          }
+        })
 
     }
   }
@@ -62,7 +63,8 @@ export class ChatScreenComponent implements OnChanges, OnDestroy {
   sendMessage() {
     const message: string = this.form.value.message
     const currentUser = localStorage.getItem('currentUserId')
-    this.chatService.sendMessages(currentUser, this.selectedUser._id, message)
+    const normalizedRoomId = `hai`
+    this.chatService.sendMessages(currentUser, this.selectedUser._id, message, normalizedRoomId)
     this.form.reset()
   }
 

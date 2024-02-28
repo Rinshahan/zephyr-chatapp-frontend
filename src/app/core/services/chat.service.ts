@@ -13,8 +13,12 @@ export class ChatService {
     this.socket = io("http://localhost:3000")
   }
 
-  sendMessages(sender: string, userToChatId: string, message: string): void {
-    this.socket.emit("sendMessage", { sender, userToChatId, message })
+  joinRoom(roomId: string) {
+    this.socket.emit("join-room", { roomId })
+  }
+
+  sendMessages(sender: string, userToChatId: string, message: string, roomId: string): void {
+    this.socket.emit("send-message", { sender: sender, reciever: userToChatId, message, room: roomId })
     //return this.http.post<ChatResponse>(`http://localhost:3000/api/messages/send/${userToChatId}`, { message })
   }
 
@@ -23,15 +27,18 @@ export class ChatService {
   }
 
 
+
+
   subscribeToMessage(): Observable<ChatSocket> {
-    this.socket.on("newMessage", (data) => {
+    this.socket.on("new-message", (data) => {
+      console.log(data.message)
       this.messageSubject.next(data)
     })
     return this.messageSubject.asObservable()
   }
 
   unSubscribeFromMessages(): void {
-    this.socket.off("newMessage")
+    this.socket.off("new-message")
   }
 
 
