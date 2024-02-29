@@ -5,7 +5,7 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 const routes: Routes = [
   { path: '', loadChildren: () => import('./features/feature-auth/feature-auth.module').then(m => m.FeatureAuthModule) },
   { path: 'chatpage', loadChildren: () => import('./features/feature-chat/feature-chat.module').then(m => m.FeatureChatModule) },
-  { path: '**', component: NotFoundComponent }
+  // { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

@@ -1,8 +1,9 @@
 <div class="flex">
   <div class="left">
-    <app-user-side-bar (userSelected)="selectedUser = $event"></app-user-side-bar>
+    <!-- <router-outlet name="primary"></router-outlet> -->
+    <app-user-side-bar></app-user-side-bar>
   </div>
   <div class="right" style="margin-left: 100px;">
-    <app-chat-screen [selectedUser]="selectedUser"></app-chat-screen>
+    <router-outlet name="primary"></router-outlet>
   </div>
 </div>
