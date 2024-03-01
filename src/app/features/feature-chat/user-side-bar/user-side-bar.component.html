@@ -1,6 +1,6 @@
 <div class="main">
   <div *ngFor="let user of users" style="cursor: pointer; background-color: aqua;border: 1px solid black;">
-    <div class="users" [routerLink]="'chat/user/'+user._id">
+    <div class="users" [routerLink]="'chat/user/'+user._id" (click)="selectedUser(user._id)">
       <img style="height: 50x;width: 50px;border-radius: 25px;" [src]="user.image" alt="">
       <ul>{{user.username}}</ul>
       <ul>{{user.email}}</ul>

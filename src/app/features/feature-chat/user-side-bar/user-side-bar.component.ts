@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserResponse } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
+import { SharedService } from 'src/app/core/services/shared.service';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { UserService } from 'src/app/core/services/user.service';
 export class UserSideBarComponent implements OnInit {
   users: User[]
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private sharedService: SharedService) { }
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe((res: UserResponse) => {
       console.log(res);
@@ -20,6 +21,10 @@ export class UserSideBarComponent implements OnInit {
     }, (err) => {
       console.log(err.error.message);
     })
+  }
+
+  selectedUser(userId: string) {
+    this.sharedService.setSelectedUserId(userId)
   }
 
 }
