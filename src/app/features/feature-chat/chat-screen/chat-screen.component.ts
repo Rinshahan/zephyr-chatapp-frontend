@@ -27,6 +27,12 @@ export class ChatScreenComponent implements OnInit {
     this.messageArray = []
     this.sharedService.selectedUserId$.subscribe(userId => {
       this.selectedUserId = userId
+      this.chatService.getMessages(userId).subscribe((res) => {
+        console.log(res)
+        this.messageArray = res.message
+      }, (err) => {
+        console.log(err)
+      })
       this.chatService.joinRoom(this.roomId)
     })
 

@@ -22,6 +22,11 @@ export class ChatService {
   }
 
 
+  getMessages(userToChatId: string): Observable<ChatResponse> {
+    return this.http.get<ChatResponse>(`http://localhost:3000/api/messages/${userToChatId}`)
+  }
+
+
   recieveMessage(): Observable<ChatSocket> {
     return new Observable<ChatSocket>(observer => {
       this.socket.on("new-message", (data) => {

@@ -1,18 +1,28 @@
-<div class="ml-[500px]" *ngIf="selectedUserId">
-  <div>
-    <!-- <img style="height: 50px;width: 50px;border-radius: 25px;display: inline;" [src]="selectedUser.image" alt=""> -->
-    <h4 class="ml-[2px]" style="display: inline;">{{selectedUserId}}</h4>
+<div class="bg-gray-400 h-[600px] w-[1000px]  rounded-lg" *ngIf="selectedUserId">
+
+  <div class="bg-white h-[50px] w-[600px] flex align-center justify-center flex-col shadow-md rounded-lg">
+    <h4 class=" ml-[10px]">{{selectedUserId}}</h4>
+    <h6 class="ml-[10px]">Online</h6>
   </div>
-  <div *ngFor="let message of messageArray">
-    <ng-container *ngIf="message.reciever===currentUserId && message.sender===selectedUserId">
-      <p>{{message.message}}</p>
-      <small></small>
-    </ng-container>
-    <ng-container *ngIf="message.sender===currentUserId && message.reciever===selectedUserId">
-      <p class="ml-[100px]">{{message.message}}</p>
-      <!-- <small class="ml-[100px]">{{message.createdAt|date:'shortTime'}}</small> -->
-    </ng-container>
+
+  <div
+    class="h-[400px] w-[600px] overflow-y-scroll scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 bg-orange-400">
+    <div *ngFor="let message of messageArray">
+      <ng-container *ngIf="message.reciever===currentUserId && message.sender===selectedUserId">
+        <p>Him</p>
+        <p>{{message.message}}</p>
+        <small class="ml-[100px]">{{message.createdAt|date:'shortTime'}}</small>
+      </ng-container>
+      <div class="ml-[400px]">
+        <ng-container *ngIf="message.sender===currentUserId && message.reciever===selectedUserId">
+          <p>you</p>
+          <p>{{message.message}}</p>
+          <small>{{message.createdAt|date:'shortTime'}}</small>
+        </ng-container>
+      </div>
+    </div>
   </div>
+
 
   <div class="mt-[10px]">
     <form #messageForm="ngForm">
