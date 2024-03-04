@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, filter, from } from 'rxjs';
 import { ChatResponse, ChatSocket } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
@@ -17,7 +17,7 @@ export class ChatScreenComponent implements OnInit {
   public currentUserId: string
   public roomId: string = 'room 1'
   public messageArray: ChatSocket[]
-  constructor(private chatService: ChatService, private sharedService: SharedService, private activatedRoute: ActivatedRoute) {
+  constructor(private chatService: ChatService, private sharedService: SharedService, private activatedRoute: ActivatedRoute, private router: Router) {
 
   }
 
@@ -53,5 +53,8 @@ export class ChatScreenComponent implements OnInit {
     form.reset()
   }
 
+  startvideoCall() {
+    this.router.navigate(['../video-call', this.selectedUserId], { relativeTo: this.activatedRoute.parent })
+  }
 
 }

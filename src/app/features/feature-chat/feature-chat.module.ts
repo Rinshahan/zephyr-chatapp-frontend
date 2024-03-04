@@ -10,11 +10,14 @@ import { MatBadgeModule } from '@angular/material/badge'
 import { MatIconModule } from "@angular/material/icon"
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
+import { VideocallComponent } from './videocall/videocall.component';
+
 @NgModule({
   declarations: [
     UserSideBarComponent,
     ChatPageComponent,
-    ChatScreenComponent
+    ChatScreenComponent,
+    VideocallComponent
   ],
   imports: [
     CommonModule,

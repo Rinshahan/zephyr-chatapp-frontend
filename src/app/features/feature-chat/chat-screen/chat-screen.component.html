@@ -1,17 +1,22 @@
 <div class="bg-gray-400 h-[600px] w-[1000px]  rounded-lg" *ngIf="selectedUserId">
 
-  <div class="bg-white h-[50px] w-[600px] flex align-center justify-center flex-col shadow-md rounded-lg">
+  <div class="relative bg-white h-[50px] w-[600px] flex align-center justify-center flex-col shadow-md rounded-lg">
     <h4 class=" ml-[10px]">{{selectedUserId}}</h4>
     <h6 class="ml-[10px]">Online</h6>
+    <div class="absolute left-[400px]">
+      <a [routerLink]="['../../../videocall',selectedUserId]">VideoCall</a>
+    </div>
   </div>
 
+  <!--Messages -->
+
   <div
-    class="h-[400px] w-[600px] overflow-y-scroll scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 bg-orange-400">
+    class="h-[500px] w-[600px] overflow-y-scroll scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 bg-orange-400">
     <div *ngFor="let message of messageArray">
       <ng-container *ngIf="message.reciever===currentUserId && message.sender===selectedUserId">
         <p>Him</p>
         <p>{{message.message}}</p>
-        <small class="ml-[100px]">{{message.createdAt|date:'shortTime'}}</small>
+        <small>{{message.createdAt|date:'shortTime'}}</small>
       </ng-container>
       <div class="ml-[400px]">
         <ng-container *ngIf="message.sender===currentUserId && message.reciever===selectedUserId">
@@ -24,9 +29,9 @@
   </div>
 
 
-  <div class="mt-[10px]">
+  <div class="mt-[10px] flex align-center relative">
     <form #messageForm="ngForm">
-      <input ngModel placeholder="Type anything!!!" style="border: 1px solid black;" type="text" name="message">
+      <input class="border-none" ngModel placeholder="Type anything!!!" type="text" name="message">
     </form>
     <button (click)="sendMessage(messageForm)"
       class="cursor-pointer text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">send</button>
