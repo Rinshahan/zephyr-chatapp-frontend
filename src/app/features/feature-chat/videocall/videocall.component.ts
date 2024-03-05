@@ -18,13 +18,17 @@ export class VideocallComponent implements OnInit {
   roomId: string = 'room1'
   peerConnection: RTCPeerConnection
   user: UserAPI
-  constructor(private activatedRoute: ActivatedRoute, private VideocallService: VideocallService, private userService: UserService) { }
+  isCalling: boolean
+  constructor(private activatedRoute: ActivatedRoute, private VideocallService: VideocallService, private userService: UserService) {
+    this.isCalling = this.VideocallService.isCalling
+  }
   ngOnInit(): void {
     this.selectedUser = this.activatedRoute.snapshot.paramMap.get('id')
     this.userService.getAUser(this.selectedUser).subscribe((res) => {
       this.user = res
     })
     this.startVideoCall()
+    this.VideocallService.onIncomingCall()
   }
 
   async startVideoCall() {
@@ -50,7 +54,7 @@ export class VideocallComponent implements OnInit {
       // create offer and initiate the call
       const offer = await this.peerConnection.createOffer()
       await this.peerConnection.setLocalDescription(offer)
-
+      this.isCalling = true
       const data: Offer = {
         offer: offer,
         roomId: this.roomId
@@ -60,7 +64,6 @@ export class VideocallComponent implements OnInit {
       console.log(error)
     }
   }
-
 
 
 

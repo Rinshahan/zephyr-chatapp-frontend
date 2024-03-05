@@ -7,6 +7,7 @@ import { User, UserAPI } from 'src/app/core/models/user.model';
 import { ChatService } from 'src/app/core/services/chat.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { UserService } from 'src/app/core/services/user.service';
+import { VideocallService } from 'src/app/core/services/videocall.service';
 @Component({
   selector: 'app-chat-screen',
   templateUrl: './chat-screen.component.html',
@@ -19,7 +20,7 @@ export class ChatScreenComponent implements OnInit {
   public roomId: string = 'room 1'
   public messageArray: ChatSocket[]
   public user: UserAPI
-  constructor(private chatService: ChatService, private sharedService: SharedService, private activatedRoute: ActivatedRoute, private router: Router, private userService: UserService) {
+  constructor(private videoService: VideocallService, private chatService: ChatService, private sharedService: SharedService, private activatedRoute: ActivatedRoute, private router: Router, private userService: UserService) {
 
   }
 
@@ -46,9 +47,10 @@ export class ChatScreenComponent implements OnInit {
     })
 
     this.chatService.recieveMessage().subscribe((res) => {
-      console.log(res)
+      //console.log(res)
       this.messageArray.push(res)
     })
+
   }
 
   sendMessage(form: NgForm) {

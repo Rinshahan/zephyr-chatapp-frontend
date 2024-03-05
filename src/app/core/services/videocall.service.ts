@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ChatService } from './chat.service';
 import { Socket } from 'socket.io-client';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VideocallService {
   socket: Socket
+  isCalling: boolean = false
+
   constructor(private chatService: ChatService) {
     this.socket = this.chatService.socket
   }
@@ -24,15 +27,10 @@ export class VideocallService {
 
   // methods for incoming call 
 
-  onIncomingCall(callback: (offer: RTCSessionDescription) => void) {
-    this.socket.on("incoming-call", callback)
+  onIncomingCall() {
+    this.socket.on("incoming-call", (data) => {
+      console.log(data)
+    })
   }
 
-  onAnswerRecieved(callback: (offer: RTCSessionDescription) => void) {
-    this.socket.emit("answer-recieved", callback)
-  }
-
-  onIceCandidate(callback: (offer: RTCIceCandidate) => void) {
-    this.socket.emit("ice-candidate", callback)
-  }
 }
