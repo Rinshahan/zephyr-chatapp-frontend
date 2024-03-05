@@ -1,7 +1,7 @@
 <div class="bg-gray-400 h-[600px] w-[1000px]  rounded-lg" *ngIf="selectedUserId">
 
   <div class="relative bg-white h-[50px] w-[600px] flex align-center justify-center flex-col shadow-md rounded-lg">
-    <h4 class=" ml-[10px]">{{selectedUserId}}</h4>
+    <h4 class=" ml-[10px]">{{user.data.username}}</h4>
     <h6 class="ml-[10px]">Online</h6>
     <div class="absolute left-[400px]">
       <a [routerLink]="['../../../videocall',selectedUserId]">VideoCall</a>

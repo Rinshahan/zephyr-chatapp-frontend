@@ -3,9 +3,10 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, filter, from } from 'rxjs';
 import { ChatResponse, ChatSocket } from 'src/app/core/models/apis.model';
-import { User } from 'src/app/core/models/user.model';
+import { User, UserAPI } from 'src/app/core/models/user.model';
 import { ChatService } from 'src/app/core/services/chat.service';
 import { SharedService } from 'src/app/core/services/shared.service';
+import { UserService } from 'src/app/core/services/user.service';
 @Component({
   selector: 'app-chat-screen',
   templateUrl: './chat-screen.component.html',
@@ -17,7 +18,8 @@ export class ChatScreenComponent implements OnInit {
   public currentUserId: string
   public roomId: string = 'room 1'
   public messageArray: ChatSocket[]
-  constructor(private chatService: ChatService, private sharedService: SharedService, private activatedRoute: ActivatedRoute, private router: Router) {
+  public user: UserAPI
+  constructor(private chatService: ChatService, private sharedService: SharedService, private activatedRoute: ActivatedRoute, private router: Router, private userService: UserService) {
 
   }
 
@@ -27,6 +29,13 @@ export class ChatScreenComponent implements OnInit {
     this.messageArray = []
     this.sharedService.selectedUserId$.subscribe(userId => {
       this.selectedUserId = userId
+      // get User details api calls
+      this.userService.getAUser(this.selectedUserId).subscribe((res) => {
+        this.user = res
+      }, (err) => {
+        console.log(err)
+      })
+      // load initial messages api calls
       this.chatService.getMessages(userId).subscribe((res) => {
         console.log(res)
         this.messageArray = res.message
@@ -56,5 +65,7 @@ export class ChatScreenComponent implements OnInit {
   startvideoCall() {
     this.router.navigate(['../video-call', this.selectedUserId], { relativeTo: this.activatedRoute.parent })
   }
+
+
 
 }
