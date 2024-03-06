@@ -10,6 +10,7 @@ import { VideocallService } from 'src/app/core/services/videocall.service';
   templateUrl: './videocall.component.html',
   styleUrls: ['./videocall.component.css']
 })
+
 export class VideocallComponent implements OnInit {
   @ViewChild('localVideo') localVideo: ElementRef<HTMLVideoElement>
   @ViewChild('remoteVideo') remoteVideo: ElementRef<HTMLVideoElement>
@@ -19,23 +20,28 @@ export class VideocallComponent implements OnInit {
   peerConnection: RTCPeerConnection
   user: UserAPI
   isCalling: boolean
+
   constructor(private activatedRoute: ActivatedRoute, private VideocallService: VideocallService, private userService: UserService) {
     this.isCalling = this.VideocallService.isCalling
   }
+
+
+
   ngOnInit(): void {
     this.selectedUser = this.activatedRoute.snapshot.paramMap.get('id')
     this.userService.getAUser(this.selectedUser).subscribe((res) => {
       this.user = res
     })
     this.startVideoCall()
-    this.VideocallService.onIncomingCall()
   }
 
   async startVideoCall() {
     try {
-      this.localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      this.localStream = stream
       this.localVideo.nativeElement.srcObject = this.localStream
       this.localVideo.nativeElement.play()
+
       this.peerConnection = new RTCPeerConnection({
         iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.1.google.com:19302'] }]
       })
@@ -47,7 +53,7 @@ export class VideocallComponent implements OnInit {
       // handle ice candidates
       this.peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
-          this.VideocallService
+          this.VideocallService.sendIceCandidate(event.candidate)
         }
       }
 
@@ -62,9 +68,9 @@ export class VideocallComponent implements OnInit {
       this.VideocallService.initiateCall(data)
     } catch (error) {
       console.log(error)
+      if (error instanceof DOMException && error.name === "NotAllowedError") {
+        console.error("Permissions for camera and microphone is denied")
+      }
     }
   }
-
-
-
 }

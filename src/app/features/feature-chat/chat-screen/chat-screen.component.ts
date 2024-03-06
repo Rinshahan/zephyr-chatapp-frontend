@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, filter, from } from 'rxjs';
 import { ChatResponse, ChatSocket } from 'src/app/core/models/apis.model';
@@ -8,6 +9,7 @@ import { ChatService } from 'src/app/core/services/chat.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { VideocallService } from 'src/app/core/services/videocall.service';
+import { IncomingcallmodalComponent } from 'src/app/shared/incomingcallmodal/incomingcallmodal.component';
 @Component({
   selector: 'app-chat-screen',
   templateUrl: './chat-screen.component.html',
@@ -20,8 +22,14 @@ export class ChatScreenComponent implements OnInit {
   public roomId: string = 'room 1'
   public messageArray: ChatSocket[]
   public user: UserAPI
-  constructor(private videoService: VideocallService, private chatService: ChatService, private sharedService: SharedService, private activatedRoute: ActivatedRoute, private router: Router, private userService: UserService) {
-
+  constructor(
+    private videoService: VideocallService,
+    private chatService: ChatService,
+    private sharedService: SharedService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private userService: UserService,
+    private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -51,6 +59,11 @@ export class ChatScreenComponent implements OnInit {
       this.messageArray.push(res)
     })
 
+    this.videoService.onIncomingCall().subscribe((data) => {
+      console.log("Incoming Call", data)
+      this.openIncomingModal(data)
+    })
+
   }
 
   sendMessage(form: NgForm) {
@@ -64,8 +77,18 @@ export class ChatScreenComponent implements OnInit {
     form.reset()
   }
 
-  startvideoCall() {
-    this.router.navigate(['../video-call', this.selectedUserId], { relativeTo: this.activatedRoute.parent })
+
+  openIncomingModal(data) {
+    const dialogRef = this.dialog.open(IncomingcallmodalComponent, {
+      data: { data }
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        console.log("call accepted")
+      } else {
+        console.log("call-Rejected")
+      }
+    })
   }
 
 
