@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, filter, from } from 'rxjs';
 import { ChatResponse, ChatSocket } from 'src/app/core/models/apis.model';
+import { offerResponse } from 'src/app/core/models/interfaces';
 import { User, UserAPI } from 'src/app/core/models/user.model';
 import { ChatService } from 'src/app/core/services/chat.service';
 import { SharedService } from 'src/app/core/services/shared.service';
@@ -61,6 +62,7 @@ export class ChatScreenComponent implements OnInit {
 
     this.videoService.onIncomingCall().subscribe((data) => {
       console.log("Incoming Call", data)
+
       this.openIncomingModal(data)
     })
 
@@ -85,7 +87,7 @@ export class ChatScreenComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         console.log("call accepted")
-        console.log(this.selectedUserId)
+        this.router.navigate([`video-call/${this.selectedUserId}`])
       } else {
         console.log("call-Rejected")
       }

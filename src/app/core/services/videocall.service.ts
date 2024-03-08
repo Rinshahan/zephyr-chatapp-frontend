@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ChatService } from './chat.service';
 import { Socket } from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
+import { offerResponse } from '../models/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,6 @@ export class VideocallService {
     this.socket = this.chatService.socket
   }
 
-
   initiateCall(data) {
     this.socket.emit('initiate-call', data)
   }
@@ -25,14 +25,16 @@ export class VideocallService {
 
   // methods for incoming call 
 
-  onIncomingCall(): Observable<RTCSessionDescription> {
-    return new Observable(subscriber => {
+  onIncomingCall(): Observable<offerResponse> {
+    return new Observable<offerResponse>(observer => {
       this.socket.on("incoming-call", (data) => {
-        subscriber.next(data)
+        observer.next(data)
       });
     });
   }
 
   // method for handling answer call
-
+  callMade(answer) {
+    this.socket.emit("answer-made", answer)
+  }
 }

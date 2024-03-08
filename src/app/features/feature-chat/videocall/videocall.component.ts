@@ -21,7 +21,7 @@ export class VideocallComponent implements OnInit {
   peerConnection: RTCPeerConnection
   user: UserAPI
   isCalling: boolean
-
+  currentUserId: string
   constructor(
     private activatedRoute: ActivatedRoute,
     private VideocallService: VideocallService,
@@ -37,7 +37,9 @@ export class VideocallComponent implements OnInit {
     this.userService.getAUser(this.selectedUser).subscribe((res) => {
       this.user = res
     })
+    this.currentUserId = localStorage.getItem("currentUserId")
     this.startVideoCall()
+
   }
 
   async startVideoCall() {
@@ -68,7 +70,9 @@ export class VideocallComponent implements OnInit {
       this.isCalling = true
       const data: Offer = {
         offer: offer,
-        roomId: this.roomId
+        roomId: this.roomId,
+        caller: this.currentUserId,
+        reciever: this.selectedUser
       }
       this.VideocallService.initiateCall(data)
     } catch (error) {
@@ -79,12 +83,5 @@ export class VideocallComponent implements OnInit {
     }
   }
 
-  async acceptCall(data: RTCSessionDescription) {
-    try {
-      const answer = await this.peerConnection.createAnswer()
-      await this.peerConnection.setLocalDescription(answer)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+
 }
