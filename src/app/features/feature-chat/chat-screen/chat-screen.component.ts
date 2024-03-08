@@ -85,6 +85,7 @@ export class ChatScreenComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         console.log("call accepted")
+        console.log(this.selectedUserId)
       } else {
         console.log("call-Rejected")
       }

@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Offer } from 'src/app/core/models/interfaces';
 import { UserAPI } from 'src/app/core/models/user.model';
@@ -21,7 +22,11 @@ export class VideocallComponent implements OnInit {
   user: UserAPI
   isCalling: boolean
 
-  constructor(private activatedRoute: ActivatedRoute, private VideocallService: VideocallService, private userService: UserService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private VideocallService: VideocallService,
+    private userService: UserService,
+    private dialog: MatDialog) {
     this.isCalling = this.VideocallService.isCalling
   }
 
@@ -71,6 +76,15 @@ export class VideocallComponent implements OnInit {
       if (error instanceof DOMException && error.name === "NotAllowedError") {
         console.error("Permissions for camera and microphone is denied")
       }
+    }
+  }
+
+  async acceptCall(data: RTCSessionDescription) {
+    try {
+      const answer = await this.peerConnection.createAnswer()
+      await this.peerConnection.setLocalDescription(answer)
+    } catch (error) {
+      console.log(error)
     }
   }
 }
