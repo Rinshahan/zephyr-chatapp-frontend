@@ -6,7 +6,7 @@
   <div class="relative">
     <h3>Video Stream</h3>
     <video #remoteVideo autoplay></video>
-    <span *ngIf="isCalling">Calling...</span>
+    <button (click)="initiateCall()">VideoCall</button>
   </div>
 
 </div>

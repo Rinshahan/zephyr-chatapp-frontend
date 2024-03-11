@@ -4,7 +4,7 @@
     <h4 class=" ml-[10px]">{{user.data.username}}</h4>
     <h6 class="ml-[10px]">Online</h6>
     <div class="absolute left-[400px]">
-      <a [routerLink]="['../../../videocall',selectedUserId]">VideoCall</a>
+      <button (click)="videoCall()">VideoCall</button>
     </div>
   </div>
 

@@ -5,6 +5,7 @@ import { Offer } from 'src/app/core/models/interfaces';
 import { UserAPI } from 'src/app/core/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { VideocallService } from 'src/app/core/services/videocall.service';
+import { WebrtcService } from 'src/app/core/services/webrtc.service';
 
 @Component({
   selector: 'app-videocall',
@@ -26,55 +27,43 @@ export class VideocallComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private VideocallService: VideocallService,
     private userService: UserService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private webrtc: WebrtcService) {
     this.isCalling = this.VideocallService.isCalling
   }
 
 
 
   ngOnInit(): void {
+    this.webrtc.createPeerConnection()
     this.selectedUser = this.activatedRoute.snapshot.paramMap.get('id')
     this.userService.getAUser(this.selectedUser).subscribe((res) => {
       this.user = res
     })
     this.currentUserId = localStorage.getItem("currentUserId")
-    this.startVideoCall()
-
+    this.setupWebRtc()
+    this.dialog
   }
 
-  async startVideoCall() {
+  async setupWebRtc() {
     try {
+
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       this.localStream = stream
       this.localVideo.nativeElement.srcObject = this.localStream
       this.localVideo.nativeElement.play()
 
-      this.peerConnection = new RTCPeerConnection({
-        iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.1.google.com:19302'] }]
-      })
+
       // add local stream to peer connection
-      this.localStream.getTracks().forEach(track => {
-        this.peerConnection.addTrack(track, this.localStream)
+      // this.localStream.getTracks().forEach(track => {
+      //   this.peerConnection.addTrack(track, this.localStream)
+      // })
+
+      // add ice candidates
+      this.VideocallService.recieverIceCandidate().subscribe((candidate) => {
+        this.webrtc.addIceCandidate(candidate)
       })
 
-      // handle ice candidates
-      this.peerConnection.onicecandidate = (event) => {
-        if (event.candidate) {
-          this.VideocallService.sendIceCandidate(event.candidate)
-        }
-      }
-
-      // create offer and initiate the call
-      const offer = await this.peerConnection.createOffer()
-      await this.peerConnection.setLocalDescription(offer)
-      this.isCalling = true
-      const data: Offer = {
-        offer: offer,
-        roomId: this.roomId,
-        caller: this.currentUserId,
-        reciever: this.selectedUser
-      }
-      this.VideocallService.initiateCall(data)
     } catch (error) {
       console.log(error)
       if (error instanceof DOMException && error.name === "NotAllowedError") {
@@ -83,5 +72,29 @@ export class VideocallComponent implements OnInit {
     }
   }
 
+  async initiateCall() {
+    try {
+      const offer = await this.webrtc.createOffer()
+      const data: Offer = {
+        offer: offer,
+        roomId: this.roomId,
+        caller: this.currentUserId,
+        reciever: this.selectedUser
+      }
+      this.VideocallService.initiateCall(data)
+    } catch (error) {
+      console.log('Error making call : ', error)
+    }
+  }
 
+
+  async acceptOffer() {
+    const answer = await this.webrtc.createAnswer()
+    const data = {
+      answerer: this.currentUserId,
+      receiver: this.selectedUser,
+      answer: answer
+    }
+    this.VideocallService.callMade(data)
+  }
 }

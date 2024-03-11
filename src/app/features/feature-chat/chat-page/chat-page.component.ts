@@ -10,5 +10,4 @@ export class ChatPageComponent {
   users: User[]
   @Input() selectedUser: User
 
-
 }

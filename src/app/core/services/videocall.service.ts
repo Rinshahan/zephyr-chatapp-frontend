@@ -18,9 +18,18 @@ export class VideocallService {
   initiateCall(data) {
     this.socket.emit('initiate-call', data)
   }
-
+  // send ice candidate
   sendIceCandidate(candidate: RTCIceCandidate) {
     this.socket.emit('ice-candidate', candidate);
+  }
+
+  // Recieve ice Candidate
+  recieverIceCandidate() {
+    return new Observable<RTCIceCandidate>(observer => {
+      this.socket.on("ice-candidate", (candidate) => {
+        observer.next(candidate)
+      })
+    })
   }
 
   // methods for incoming call 

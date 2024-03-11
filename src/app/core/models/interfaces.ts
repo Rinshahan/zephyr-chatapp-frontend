@@ -8,10 +8,8 @@ export interface Offer {
 }
 
 export interface offerResponse {
-  data: {
-    offer: RTCSessionDescriptionInit,
-    roomId: string,
-    caller: User,
-    reciever: User
-  }
+  offer: RTCSessionDescriptionInit,
+  roomId: string,
+  caller: User,
+  reciever: User
 }

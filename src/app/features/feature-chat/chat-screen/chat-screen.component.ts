@@ -4,12 +4,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, filter, from } from 'rxjs';
 import { ChatResponse, ChatSocket } from 'src/app/core/models/apis.model';
-import { offerResponse } from 'src/app/core/models/interfaces';
+import { Offer, offerResponse } from 'src/app/core/models/interfaces';
 import { User, UserAPI } from 'src/app/core/models/user.model';
 import { ChatService } from 'src/app/core/services/chat.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { VideocallService } from 'src/app/core/services/videocall.service';
+import { WebrtcService } from 'src/app/core/services/webrtc.service';
 import { IncomingcallmodalComponent } from 'src/app/shared/incomingcallmodal/incomingcallmodal.component';
 @Component({
   selector: 'app-chat-screen',
@@ -30,7 +31,8 @@ export class ChatScreenComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private webrtc: WebrtcService) {
   }
 
   ngOnInit(): void {
@@ -60,11 +62,6 @@ export class ChatScreenComponent implements OnInit {
       this.messageArray.push(res)
     })
 
-    this.videoService.onIncomingCall().subscribe((data) => {
-      console.log("Incoming Call", data)
-
-      this.openIncomingModal(data)
-    })
 
   }
 
@@ -79,20 +76,11 @@ export class ChatScreenComponent implements OnInit {
     form.reset()
   }
 
-
-  openIncomingModal(data) {
-    const dialogRef = this.dialog.open(IncomingcallmodalComponent, {
-      data: { data }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        console.log("call accepted")
-        this.router.navigate([`video-call/${this.selectedUserId}`])
-      } else {
-        console.log("call-Rejected")
-      }
-    })
+  videoCall() {
+    const offer = this.webrtc.createOffer()
+    this.router.navigate([`/video/${this.selectedUserId}`])
   }
+
 
 
 
