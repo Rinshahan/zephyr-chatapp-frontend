@@ -10,10 +10,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { IncomingcallmodalComponent } from './shared/incomingcallmodal/incomingcallmodal.component';
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatButtonModule } from '@angular/material/button';
+import { WaitinguseracceptanceComponent } from './shared/waitinguseracceptance/waitinguseracceptance.component';
 @NgModule({
   declarations: [
     AppComponent,
     IncomingcallmodalComponent,
+    WaitinguseracceptanceComponent
   ],
   imports: [
     BrowserModule,

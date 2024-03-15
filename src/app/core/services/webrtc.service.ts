@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { VideocallService } from './videocall.service';
+import { Offer, answer } from '../models/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -8,20 +9,30 @@ export class WebrtcService {
   peerConnection: RTCPeerConnection
   constructor(private videoCallService: VideocallService) { }
 
-  async createPeerConnection() {
+  createPeerConnection() {
     try {
       this.peerConnection = new RTCPeerConnection({
-        iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.1.google.com:19302'] }]
+        iceServers: [{ urls: ['stun:stun1.l.google.com:19302'] }]
       })
 
-      // send ice candidate
-      this.peerConnection.onicecandidate = (event) => {
-        if (event.candidate) {
-          this.videoCallService.sendIceCandidate(event.candidate)
-        }
-      }
     } catch (error) {
       console.log('Error creating peer connection : ', error)
+    }
+  }
+
+  // send ice candidate
+  async sendIceCandidate(sender, reciever) {
+    try {
+      this.peerConnection.onicecandidate = (event) => {
+        const datas = {
+          sender: sender,
+          reciever: reciever,
+          candidate: event.candidate
+        }
+        this.videoCallService.sendIceCandidate(datas)
+      }
+    } catch (error) {
+      console.log(`Error sending ice candidate`, error)
     }
   }
 
@@ -38,10 +49,13 @@ export class WebrtcService {
 
   // create offer fn
 
-  async createOffer(): Promise<RTCSessionDescriptionInit | null> {
+  async createOffer(data?: Offer): Promise<RTCSessionDescriptionInit | null> {
     try {
       const offer = await this.peerConnection.createOffer();
       await this.peerConnection.setLocalDescription(offer)
+      if (data) {
+        this.videoCallService.initiateCall(data)
+      }
       return offer
     } catch (error) {
       console.log('error creating offer', error)
@@ -49,10 +63,13 @@ export class WebrtcService {
     }
   }
 
-  async createAnswer(): Promise<RTCSessionDescriptionInit | null> {
+  async createAnswer(data?: answer): Promise<RTCSessionDescriptionInit | null> {
     if (this.peerConnection) {
       const answer = await this.peerConnection.createAnswer()
       await this.peerConnection.setLocalDescription(answer)
+      if (data) {
+        this.videoCallService.callMade(data)
+      }
       return answer
     } else {
       console.log('error creating answer')
@@ -60,7 +77,7 @@ export class WebrtcService {
     }
   }
 
-  async setRemoteDescription(description: RTCSessionDescription) {
+  async setRemoteDescription(description: RTCSessionDescriptionInit) {
     if (this.peerConnection) {
       try {
         await this.peerConnection.setRemoteDescription(description)

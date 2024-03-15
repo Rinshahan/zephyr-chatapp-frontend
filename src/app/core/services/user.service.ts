@@ -12,9 +12,9 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getAllUsers(): Observable<UserResponse> {
-    return this.http.get<UserResponse>('http://localhost:3000/api/user/')
+    return this.http.get<UserResponse>('http://localhost:4000/api/user/')
   }
   getAUser(userId): Observable<UserAPI> {
-    return this.http.get<UserAPI>(`http://localhost:3000/api/user/${userId}`)
+    return this.http.get<UserAPI>(`http://localhost:4000/api/user/${userId}`)
   }
 }

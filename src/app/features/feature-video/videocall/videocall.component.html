@@ -1,12 +1,56 @@
-<div class="flex flex-row">
-  <div>
-    <h3>Local Stream</h3>
-    <video #localVideo autoplay muted></video>
-  </div>
-  <div class="relative">
-    <h3>Video Stream</h3>
-    <video #remoteVideo autoplay></video>
-    <button (click)="initiateCall()">VideoCall</button>
-  </div>
+<div class="flex flex-row space-x-4 p-4">
 
+  <div class="flex flex-col">
+    <h3 class="text-lg font-semibold mb-2">Local Stream</h3>
+    <div class="relative">
+      <video #localVideo [autoplay]="true" [muted]="true" class="w-full rounded-lg shadow-md"></video>
+      <div class="absolute bottom-2 right-2 flex space-x-2">
+        <button (click)="toggleLocalVideo()" class="px-4 py-2 rounded-lg shadow-md focus:outline-none"
+          [ngClass]="{ 'bg-green-500 text-white hover:bg-green-600 focus:bg-green-600': isLocalVideoOn, 'bg-red-500 text-white hover:bg-red-600 focus:bg-red-600': !isLocalVideoOn }">
+          <svg *ngIf="isLocalVideoOn; else videoOffIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+          <ng-template #videoOffIcon>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </ng-template>
+        </button>
+        <button (click)="toggleLocalAudio()" class="px-4 py-2 rounded-lg shadow-md focus:outline-none"
+          [ngClass]="{ 'bg-green-500 text-white hover:bg-green-600 focus:bg-green-600': isLocalAudioOn, 'bg-red-500 text-white hover:bg-red-600 focus:bg-red-600': !isLocalAudioOn }">
+          <svg *ngIf="isLocalAudioOn; else audioOffIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5 10v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4m-3.618-6.379a9 9 0 0 1 12.727 12.728m0 0L18 14M6 14l-3.109 3.109M18 14l3.109-3.109M6 14l3.109 3.109">
+            </path>
+          </svg>
+          <ng-template #audioOffIcon>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </ng-template>
+        </button>
+        <button (click)="InitiateCall()"
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+          Confirm Call
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <h3 class="text-lg font-semibold mb-2">Video Stream</h3>
+    <video #remoteVideo [autoplay]="true" [muted]="true" class="w-full rounded-lg shadow-md"></video>
+  </div>
+  <div>
+
+  </div>
 </div>

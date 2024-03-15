@@ -1,19 +1,29 @@
-<div>
-  <h3>hi</h3>
-  <h3>Select</h3>
-</div>
-<div class="main flex mt-[20px] flex-col overflow-hidden">
-  <div class="mt-[15px]" *ngFor="let user of users" style="cursor: pointer">
-    <div class="flex align-center" [routerLink]="'chat/user/'+user._id" routerLinkActive="active-chat"
-      (click)="selectedUser(user._id)">
-      <img class="rounded-full object-cover w-[50px] h-[50px]" [src]="user.image" alt="">
-      <div class="ml-[10px] flex flex-col text-teal-50">
-        <ul class="font-medium text-[16px]">{{user.username}}</ul>
-        <p>3+ new Messages</p>
-        <!-- <ul>{{user.phone}}</ul> -->
-      </div>
-      <div class="ml-[60px] mt-[10px] flex bg-orange-400 align-center justify-center w-7 h-7 rounded-full">
-        <p class="mt-[3px]">4</p>
+<div class="flex flex-col">
+  <div class="flex flex-row">
+    <h1 class="text-3xl mt-4 ml-4 text-white font-bold mb-4">Zephyr</h1>
+    <button
+      class="py-2 mt-[16px] ml-[90px] h-[40px] px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+      Logout
+    </button>
+  </div>
+
+  <button class="mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 inline-block" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    Update Details
+  </button>
+  <div class="main flex flex-col overflow-hidden">
+    <div *ngFor="let user of users" class="mt-[5px]">
+      <div [routerLink]="'chat/user/'+user._id" routerLinkActive="active-chat" (click)="selectedUser(user._id)"
+        class="selct-user flex items-center cursor-pointer hover:bg-gray-100 rounded-lg p-2">
+        <img class="w-12 h-12 rounded-full object-cover" [src]="user.image" alt="">
+        <div class="ml-4">
+          <p class="text-lg text-white">{{ user.username }}</p>
+          <p class="text-white">{{ user.phone }}</p>
+        </div>
       </div>
     </div>
   </div>

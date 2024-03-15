@@ -1,31 +1,58 @@
-<!--content-wrapper-->
-<main class="bg-slate-700 mt-3 h-screen w-screen flex align-center justify-center">
-  <div class=" flex align-center justify-center mr-[100px]">
-    <!-- <img class="max-h-[500px] max-w-[700px] mt-[100px]" src="assets/singup-bg.jpg" alt=""> -->
+<main class="min-h-screen flex justify-center items-center">
+  <div class="flex justify-center items-center mr-12">
+    <!-- Add your image here if needed -->
   </div>
-  <div class=" flex items-center justify center "> <!--Form div-->
-    <form [formGroup]="reactiveForm" (ngSubmit)="onFormSubmitted()">
+  <div class="flex flex-col items-center justify-center w-96">
+    <!--Form div-->
+    <form [formGroup]="reactiveForm" (ngSubmit)="onFormSubmitted()"
+      class="bg-white px-8 py-6 rounded-lg shadow-md space-y-4">
       <div>
-        <input type="text" formControlName="username" placeholder="Enter Your Username">
+        <input type="text" formControlName="username" placeholder="Enter Your Username"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+        <!-- Display error message if username is not filled out -->
+        <div *ngIf="reactiveForm.get('username').invalid && reactiveForm.get('username').touched" class="text-red-500">
+          Username is required</div>
       </div>
       <div>
-        <input type="email" formControlName="email" placeholder="Enter Your Email Address">
+        <input type="email" formControlName="email" placeholder="Enter Your Email Address"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+        <!-- Display error message if email is not filled out or invalid -->
+        <div *ngIf="reactiveForm.get('email').invalid && reactiveForm.get('email').touched" class="text-red-500">Enter a
+          valid email address</div>
       </div>
       <div>
-        <input type="number" formControlName="phone" placeholder="Enter Your Phone Number">
+        <input type="number" formControlName="phone" placeholder="Enter Your Phone Number"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+        <!-- Display error message if phone number is not filled out -->
+        <div *ngIf="reactiveForm.get('phone').invalid && reactiveForm.get('phone').touched" class="text-red-500">Phone
+          number is required</div>
       </div>
       <div>
-        <input type="file">
+        <input type="file" class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+        <!-- You may want to add validation for file uploads if needed -->
       </div>
       <div>
-        <input type="password" formControlName="password" placeholder="Enter Your password">
+        <input type="password" formControlName="password" placeholder="Enter Your Password"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+        <!-- Display error message if password is not filled out -->
+        <div *ngIf="reactiveForm.get('password').invalid && reactiveForm.get('password').touched" class="text-red-500">
+          Password is required</div>
       </div>
       <div>
-        <input type="password" formControlName="confirmPassword" placeholder="Confirm Password">
+        <input type="password" formControlName="confirmPassword" placeholder="Confirm Password"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+        <!-- Display error message if passwords don't match -->
+        <div *ngIf="reactiveForm.hasError('passwordMismatch') && reactiveForm.get('confirmPassword').dirty"
+          class="text-red-500">Passwords don't match</div>
       </div>
       <div>
-        <input routerLink="/login" type="submit"
-          class="cursor-pointer text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+        <button type="submit"
+          class="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-md px-4 py-2 hover:bg-gradient-to-br focus:outline-none focus:bg-blue-800 font-medium text-sm">
+          Submit
+        </button>
+      </div>
+      <div class="mt-4">
+        <p>Already have an account? <a routerLink="/login" class="text-blue-500">Login</a></p>
       </div>
     </form>
   </div>

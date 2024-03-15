@@ -1,12 +1,17 @@
-<div class="h-[200px] w-[450px]">
-  <div class="body flex align-center justify-center flex-col">
-    <img src="" alt="">
-    <h2 class="text-[22px]">Incoming Call....</h2>
-    <h2 class="text-[25px]">{{data.caller.username}}</h2>
-  </div>
-  <div class="footer flex align-center justify-center mt-[85px] space-x-[20px] text-white">
-    <button [routerLink]="['../../../videocall',data.caller._id]" (click)="acceptCall()"
-      class="h-[40px] w-[200px]  bg-green-600 rounded-lg hover:bg-green-700">Accept</button>
-    <button (click)="rejectCall()" class="h-[40px] w-[200px]  bg-red-600 rounded-lg hover:bg-red-700">Reject</button>
+<div class="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50 z-50">
+  <div class="bg-white w-[450px] p-6 rounded-lg shadow-lg">
+    <div class="flex flex-col items-center justify-center space-y-4">
+      <div class="flex items-center space-x-4">
+        <img class="w-16 h-16 rounded-full object-cover" [src]="data.invitationSender.image" alt="">
+        <h2 class="text-2xl font-bold">{{ data.invitationSender.username }}</h2>
+      </div>
+      <h2 class="text-lg">Inviting You to a Video Call...</h2>
+    </div>
+    <div class="flex justify-center mt-8 space-x-4">
+      <button (click)="acceptCall()"
+        class="w-1/2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Accept</button>
+      <button (click)="rejectCall()"
+        class="w-1/2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Decline</button>
+    </div>
   </div>
 </div>

@@ -9,7 +9,7 @@ import io, { Socket } from "socket.io-client"
 export class ChatService {
   socket: Socket
   constructor(private http: HttpClient) {
-    this.socket = io("http://localhost:3000")
+    this.socket = io("http://localhost:4000")
   }
 
   joinRoom(roomId) {
@@ -23,7 +23,7 @@ export class ChatService {
 
 
   getMessages(userToChatId: string): Observable<ChatResponse> {
-    return this.http.get<ChatResponse>(`http://localhost:3000/api/messages/${userToChatId}`)
+    return this.http.get<ChatResponse>(`http://localhost:4000/api/messages/${userToChatId}`)
   }
 
 

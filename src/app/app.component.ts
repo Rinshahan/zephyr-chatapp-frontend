@@ -4,7 +4,8 @@ import { VideocallService } from './core/services/videocall.service';
 import { MatDialog } from '@angular/material/dialog';
 import { IncomingcallmodalComponent } from './shared/incomingcallmodal/incomingcallmodal.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { offerResponse } from './core/models/interfaces';
+import { InvitationAnswer, InvitationReject, InvitationResponse, answer, offerResponse } from './core/models/interfaces';
+import { WebrtcService } from './core/services/webrtc.service';
 
 
 @Component({
@@ -14,28 +15,39 @@ import { offerResponse } from './core/models/interfaces';
 })
 export class AppComponent implements OnInit {
   title = 'frontend';
-  constructor(private videoCallService: VideocallService, private dialogRef: MatDialog, private router: Router) {
+  constructor(private videoCallService: VideocallService, private dialogRef: MatDialog, private router: Router, private webrtc: WebrtcService) {
 
   }
-  ngOnInit(): void {
+  ngOnInit() {
+    this.webrtc.createPeerConnection()
     const currentUserId = localStorage.getItem('currentUserId')
-    this.videoCallService.onIncomingCall().subscribe((data) => {
+    this.videoCallService.incomingInvitation().subscribe((data: InvitationResponse) => {
       console.log(data)
-      if (data.reciever._id === currentUserId) {
+      if (data.invitationReceiver._id === currentUserId) {
         this.openIncomingModal(data)
       }
     })
   }
 
-  openIncomingModal(data: offerResponse) {
+  openIncomingModal(data: InvitationResponse) {
     const dialogRef = this.dialogRef.open(IncomingcallmodalComponent, {
-      data: data
+      data: data,
+      disableClose: true
     })
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
       if (result === true) {
-        console.log("call accepted")
-        this.router.navigate([`video/${data.caller._id}`])
+        const datas = {
+          answerer: data.invitationReceiver,
+          receiver: data.invitationSender
+        }
+        this.videoCallService.acceptInvite(datas)
+        this.router.navigate([`video/${data.invitationSender._id}`])
       } else {
+        const datas = {
+          rejecter: data.invitationReceiver,
+          receiver: data.invitationSender
+        }
+        this.videoCallService.rejectInvite(datas)
         console.log("call-Rejected")
       }
     })

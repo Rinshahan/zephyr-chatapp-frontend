@@ -1,14 +1,25 @@
-<div>
-  <form (ngSubmit)="onFormSubmitted()" #loginForm="ngForm">
+<div class="flex items-center justify-center min-h-screen">
+  <form (ngSubmit)="onFormSubmitted()" #loginForm="ngForm" class="bg-white p-8 rounded-lg shadow-md w-96 space-y-4">
     <div>
-      <input type="email" style="border: 1px solid black;" name="email" ngModel #email="ngModel" placeholder="email">
+      <input type="email" name="email" ngModel #email="ngModel" required
+        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500" placeholder="Email">
+      <div *ngIf="email.touched && email.invalid" class="text-red-500 text-sm ml-[10px] mt-[3px]">*Email is required
+      </div>
     </div>
     <div>
-      <input style="border: 1px solid black;" type="password" name="password" ngModel #password="ngModel"
-        placeholder="password">
+      <input type="password" name="password" ngModel #password="ngModel" required
+        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500" placeholder="Password">
+      <div *ngIf="password.touched && password.invalid" class="text-red-500 text-sm ml-[10px] mt-[3px]">*Password is
+        required
+      </div>
     </div>
     <div>
-      <button type="submit">Submit</button>
+      <button type="submit" [disabled]="loginForm.invalid"
+        class="w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Submit</button>
+    </div>
+    <div class="mt-4">
+      <p>Don't have an account? <a routerLink="/registration" class="text-blue-500">Sign up</a></p>
     </div>
   </form>
+
 </div>
