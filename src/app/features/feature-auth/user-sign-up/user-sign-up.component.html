@@ -21,14 +21,15 @@
           valid email address</div>
       </div>
       <div>
-        <input type="number" formControlName="phone" placeholder="Enter Your Phone Number"
+        <input type="text" formControlName="phone" placeholder="Enter Your Phone Number"
           class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
         <!-- Display error message if phone number is not filled out -->
         <div *ngIf="reactiveForm.get('phone').invalid && reactiveForm.get('phone').touched" class="text-red-500">Phone
           number is required</div>
       </div>
       <div>
-        <input type="file" class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+        <input type="file" (change)="selectImage($event)"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
         <!-- You may want to add validation for file uploads if needed -->
       </div>
       <div>

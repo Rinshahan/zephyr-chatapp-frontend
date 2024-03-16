@@ -116,14 +116,7 @@ export class VideocallComponent implements OnInit, AfterViewInit {
     })
   }
 
-  hangUpAndRedirect(): void {
-    this.HangUpVideoCall();
-    // Redirect to the chat page
-    // For example, navigate to '/chat'
-    this.router.navigate(['/chatpage']);
-    // Show an alert
-    alert('Video call ended');
-  }
+
 
   pauseLocalVideo(): void {
     this.localStream.getTracks().forEach(tracks => {
@@ -178,7 +171,6 @@ export class VideocallComponent implements OnInit, AfterViewInit {
 
     this.peerConnection.close()
     this.peerConnection = null
-    this.hangUpAndRedirect()
   }
 
 

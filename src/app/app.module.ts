@@ -11,11 +11,13 @@ import { IncomingcallmodalComponent } from './shared/incomingcallmodal/incomingc
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatButtonModule } from '@angular/material/button';
 import { WaitinguseracceptanceComponent } from './shared/waitinguseracceptance/waitinguseracceptance.component';
+import { UserDeleteConfirmComponent } from './shared/user-delete-confirm/user-delete-confirm.component';
 @NgModule({
   declarations: [
     AppComponent,
     IncomingcallmodalComponent,
-    WaitinguseracceptanceComponent
+    WaitinguseracceptanceComponent,
+    UserDeleteConfirmComponent
   ],
   imports: [
     BrowserModule,

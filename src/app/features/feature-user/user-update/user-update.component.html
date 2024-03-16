@@ -36,8 +36,12 @@
       <div>
         <button type="button" (click)="onDeactivateAccount()"
           class="w-full bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600 focus:outline-none focus:bg-red-800 font-medium text-sm">
-          Deactivate Account
+          Delete Account
         </button>
+      </div>
+      <!-- Link for resetting password -->
+      <div class="text-center">
+        <a routerLink="/update-password" class="text-blue-500 hover:underline">Update your password here</a>
       </div>
     </form>
   </div>

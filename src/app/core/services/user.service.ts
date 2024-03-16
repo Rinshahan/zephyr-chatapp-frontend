@@ -28,4 +28,8 @@ export class UserService {
     headers.set('Content-Type', 'multipart/form-data')
     return this.http.patch<UserAPI>(`http://localhost:4000/api/user/${userId}`, formData, { headers })
   }
+
+  deleteUser(userId: string) {
+    return this.http.delete(`http://localhost:4000/api/user/${userId}`)
+  }
 }

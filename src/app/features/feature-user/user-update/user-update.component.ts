@@ -1,8 +1,11 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserAPI } from 'src/app/core/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
+import { UserDeleteConfirmComponent } from 'src/app/shared/user-delete-confirm/user-delete-confirm.component';
 
 @Component({
   selector: 'app-user-update',
@@ -10,9 +13,7 @@ import { UserService } from 'src/app/core/services/user.service';
   styleUrls: ['./user-update.component.css']
 })
 export class UserUpdateComponent implements OnInit {
-  onDeactivateAccount() {
-    throw new Error('Method not implemented.');
-  }
+
 
   userData: UserAPI;
   currentUserId: string
@@ -20,7 +21,7 @@ export class UserUpdateComponent implements OnInit {
   updateForm: FormGroup<any>;
 
   reactiveForm: FormGroup<any>;
-  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder) { }
+  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private dialogRef: MatDialog, private router: Router) { }
   ngOnInit(): void {
     this.currentUserId = this.activatedRoute.snapshot.paramMap.get('id')
     console.log(this.currentUserId);
@@ -61,5 +62,27 @@ export class UserUpdateComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  onDeactivateAccount() {
+    this.openDeleteConfirmModal()
+  }
+
+  openDeleteConfirmModal() {
+    const dialogRef = this.dialogRef.open(UserDeleteConfirmComponent, {
+      disableClose: false
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.userService.deleteUser(this.currentUserId).subscribe((data) => {
+          console.log(data);
+          this.router.navigate(['/login'])
+        }, (err) => {
+          console.log(err);
+        })
+      } else {
+        console.log("canceled")
+      }
+    })
   }
 }
