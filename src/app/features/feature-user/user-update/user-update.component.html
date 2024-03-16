@@ -1,0 +1,44 @@
+<main class="min-h-screen flex justify-center items-center">
+  <div class="flex flex-col items-center justify-center w-96">
+    <!-- Update form -->
+    <form [formGroup]="updateForm" (ngSubmit)="onUpdate()" class="bg-white px-8 py-6 rounded-lg shadow-md space-y-4">
+      <div class="flex justify-center items-center mb-4">
+        <!-- Profile Picture Display -->
+        <label for="fileInput" class="relative">
+          <img [src]="userData.data.image" alt="Profile Picture"
+            class="w-24 h-24 rounded-full object-cover cursor-pointer">
+          <input type="file" id="fileInput" (change)="onFileSelected($event)"
+            style="position: absolute; top: 0; left: 0; opacity: 0; cursor: pointer;">
+        </label>
+      </div>
+      <div>
+        <input type="text" formControlName="username" placeholder="Enter Your Username"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+      </div>
+      <div>
+        <input type="email" formControlName="email" placeholder="Enter Your Email Address"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+      </div>
+      <div>
+        <input type="text" formControlName="phone" placeholder="Enter Your Phone Number"
+          class="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500">
+      </div>
+      <div>
+        <!-- Add file upload if needed -->
+      </div>
+      <div>
+        <button type="submit"
+          class="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-md px-4 py-2 hover:bg-gradient-to-br focus:outline-none focus:bg-blue-800 font-medium text-sm">
+          Update
+        </button>
+      </div>
+      <!-- Deactivate Account button -->
+      <div>
+        <button type="button" (click)="onDeactivateAccount()"
+          class="w-full bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600 focus:outline-none focus:bg-red-800 font-medium text-sm">
+          Deactivate Account
+        </button>
+      </div>
+    </form>
+  </div>
+</main>

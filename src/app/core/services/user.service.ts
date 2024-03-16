@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserResponse } from '../models/apis.model';
@@ -16,5 +16,16 @@ export class UserService {
   }
   getAUser(userId): Observable<UserAPI> {
     return this.http.get<UserAPI>(`http://localhost:4000/api/user/${userId}`)
+  }
+
+  updateUser(userId, body, image: File): Observable<UserAPI> {
+
+    const formData: FormData = new FormData()
+
+    formData.append('image', image)
+
+    const headers: HttpHeaders = new HttpHeaders();
+    headers.set('Content-Type', 'multipart/form-data')
+    return this.http.patch<UserAPI>(`http://localhost:4000/api/user/${userId}`, formData, { headers })
   }
 }

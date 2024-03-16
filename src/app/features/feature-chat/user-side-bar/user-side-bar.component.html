@@ -1,13 +1,14 @@
 <div class="flex flex-col">
   <div class="flex flex-row">
     <h1 class="text-3xl mt-4 ml-4 text-white font-bold mb-4">Zephyr</h1>
-    <button
+    <button (click)="logout()"
       class="py-2 mt-[16px] ml-[90px] h-[40px] px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
       Logout
     </button>
   </div>
 
-  <button class="mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+  <button [routerLink]="'/user/'+currentUserId"
+    class="mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 inline-block" fill="none" viewBox="0 0 24 24"
       stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

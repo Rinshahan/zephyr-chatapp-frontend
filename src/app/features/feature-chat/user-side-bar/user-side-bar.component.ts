@@ -1,8 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserResponse } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
 import { SharedService } from 'src/app/core/services/shared.service';
+import { UserAuthService } from 'src/app/core/services/user-auth.service';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -12,9 +13,10 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class UserSideBarComponent implements OnInit {
   users: User[]
-
-  constructor(private userService: UserService, private sharedService: SharedService) { }
+  currentUserId
+  constructor(private userService: UserService, private sharedService: SharedService, private userAuth: UserAuthService, private router: Router) { }
   ngOnInit(): void {
+    this.currentUserId = localStorage.getItem('currentUserId')
     this.userService.getAllUsers().subscribe((res: UserResponse) => {
       console.log(res);
       this.users = res.data.getUsers
@@ -25,6 +27,12 @@ export class UserSideBarComponent implements OnInit {
 
   selectedUser(userId: string) {
     this.sharedService.setSelectedUserId(userId)
+  }
+
+  logout() {
+    this.sharedService.setSelectedUserId(null)
+    this.userAuth.userLogout()
+    this.router.navigate(['/login'])
   }
 
 }

@@ -13,4 +13,9 @@ export class UserAuthService {
   userLogin(userLoginData): Observable<UserLogin> {
     return this.http.post<UserLogin>('http://localhost:4000/api/user/login', userLoginData)
   }
+
+  userLogout() {
+    localStorage.removeItem('currentUserId')
+    localStorage.removeItem('token')
+  }
 }

@@ -12,13 +12,13 @@
   <!-- Messages -->
   <div class="flex-1 overflow-y-scroll px-4 py-2">
     <div *ngFor="let message of messageArray" class="mb-4">
-      <div *ngIf="message.sender === currentUserId" class="text-right">
+      <div *ngIf="message.sender === currentUserId &&message.reciever===selectedUserId" class="text-right">
         <div class="bg-blue-500 text-white py-2 px-4 rounded-lg inline-block">
           <p>{{ message.message }}</p>
           <small class="text-gray-300 block">{{ message.createdAt | date:'shortTime' }}</small>
         </div>
       </div>
-      <div *ngIf="message.reciever === currentUserId" class="text-left">
+      <div *ngIf="message.reciever === currentUserId && message.sender===selectedUserId" class="text-left">
         <div class="bg-gray-200 py-2 px-4 rounded-lg inline-block">
           <p>{{ message.message }}</p>
           <small class="text-gray-600 block">{{ message.createdAt | date:'shortTime' }}</small>

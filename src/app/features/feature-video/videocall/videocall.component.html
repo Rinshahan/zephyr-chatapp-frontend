@@ -39,9 +39,13 @@
             </svg>
           </ng-template>
         </button>
-        <button (click)="InitiateCall()"
+        <button *ngIf="!isCallStarted" (click)="InitiateCall()"
           class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-          Confirm Call
+          Call Now
+        </button>
+        <button *ngIf="isCallStarted" (click)="HangUpVideoCall()"
+          class="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
+          Hang Up
         </button>
       </div>
     </div>

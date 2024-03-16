@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, defaultUrlMatcher } from '@angular/router';
+import { ActivatedRoute, Router, defaultUrlMatcher } from '@angular/router';
 import { Offer, answer, answerResponse, candidateOffer, sendCandidate } from 'src/app/core/models/interfaces';
 import { UserAPI } from 'src/app/core/models/user.model';
 import { ChatService } from 'src/app/core/services/chat.service';
@@ -38,12 +38,15 @@ export class VideocallComponent implements OnInit, AfterViewInit {
   currentUserId: string
   isLocalVideoOn: boolean = true;
   isLocalAudioOn: boolean = true
+  isCallStarted: boolean = false
+  callInitator: boolean = false
   constructor(
     private activatedRoute: ActivatedRoute,
     private VideocallService: VideocallService,
     private userService: UserService,
     private dialog: MatDialog,
-    private chatService: ChatService) {
+    private chatService: ChatService,
+    private router: Router) {
     this.isCalling = this.VideocallService.isCalling
   }
 
@@ -93,6 +96,7 @@ export class VideocallComponent implements OnInit, AfterViewInit {
   }
 
   private async answer() {
+    this.isCallStarted = true
     const answer = await this.peerConnection.createAnswer()
     this.peerConnection.setLocalDescription(answer)
     const data = {
@@ -112,6 +116,14 @@ export class VideocallComponent implements OnInit, AfterViewInit {
     })
   }
 
+  hangUpAndRedirect(): void {
+    this.HangUpVideoCall();
+    // Redirect to the chat page
+    // For example, navigate to '/chat'
+    this.router.navigate(['/chatpage']);
+    // Show an alert
+    alert('Video call ended');
+  }
 
   pauseLocalVideo(): void {
     this.localStream.getTracks().forEach(tracks => {
@@ -153,6 +165,7 @@ export class VideocallComponent implements OnInit, AfterViewInit {
   }
 
   HangUpVideoCall(): void {
+    this.isCallStarted = false
     if (this.peerConnection) {
       this.peerConnection.onicecandidate = null
       this.peerConnection.onicegatheringstatechange = null
@@ -165,9 +178,14 @@ export class VideocallComponent implements OnInit, AfterViewInit {
 
     this.peerConnection.close()
     this.peerConnection = null
+    this.hangUpAndRedirect()
   }
 
+
+
   async InitiateCall(): Promise<void> {
+    this.isCallStarted = true
+    this.callInitator = true
     this.createPeerConnection()
     this.localStream.getTracks().forEach(track => {
       this.peerConnection.addTrack(track, this.localStream)
@@ -275,11 +293,6 @@ export class VideocallComponent implements OnInit, AfterViewInit {
     }
 
 
-
-    // this.localVideo.nativeElement.srcObject = this.localStream
-    // this.localStream.getTracks().forEach(track => {
-    //   this.peerConnection.addTrack(track, this.localStream)
-    // })
     this.localStream.getTracks().forEach(track => {
       if (!this.peerConnection.getSenders().find(sender => sender.track === track)) {
         console.log("hai");
