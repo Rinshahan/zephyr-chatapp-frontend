@@ -22,7 +22,6 @@ export class UserAuthService {
     formData.append('phone', userData.phone.toString())
     formData.append('password', userData.password.toString())
     formData.append('image', image)
-
     const headers = new HttpHeaders()
     return this.http.post(`http://localhost:4000/api/user/register`, formData, { headers })
   }
@@ -34,7 +33,6 @@ export class UserAuthService {
 
   userOtpLogin(phoneNum: string): Observable<any> {
     const phoneNumber: string = `+91${phoneNum}`
-
     return this.http.post<any>("http://localhost:4000/api/user/sendOtp", { phoneNumber })
   }
 
