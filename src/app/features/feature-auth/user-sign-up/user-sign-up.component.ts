@@ -37,6 +37,7 @@ export class UserSignUpComponent implements OnInit {
       password: this.reactiveForm.value.confirmPassword
     }
     this.userAuth.userSignUp(userData, this.image).subscribe((res) => {
+      console.log(res)
       this.router.navigate(['/login'])
     }, (err) => {
       console.log(err);

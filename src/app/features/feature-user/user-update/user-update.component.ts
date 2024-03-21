@@ -1,6 +1,6 @@
 
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserAPI } from 'src/app/core/models/user.model';
@@ -18,31 +18,57 @@ export class UserUpdateComponent implements OnInit {
   userData: UserAPI;
   currentUserId: string
   image: File
-  updateForm: FormGroup<any>;
-
-  reactiveForm: FormGroup<any>;
-  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private dialogRef: MatDialog, private router: Router) { }
+  updateForm: FormGroup = new FormGroup({
+    username: new FormControl(''),
+    email: new FormControl(''),
+    phone: new FormControl('')
+  });
+  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private dialogRef: MatDialog, private router: Router) {
+    this.userData = {
+      status, data: {
+        username: '',
+        email: '',
+        phone: '',
+        password: '',
+        image: ''
+      }
+    }
+  }
   ngOnInit(): void {
     this.currentUserId = this.activatedRoute.snapshot.paramMap.get('id')
-    console.log(this.currentUserId);
-
     this.userService.getAUser(this.currentUserId).subscribe((data) => {
       this.userData = data
       this.initForm()
     })
   }
 
+  get username(): string {
+    return this.userData?.data?.username || '';
+  }
+
+  get email(): string {
+    return this.userData?.data?.email || '';
+  }
+
+  get phone(): string {
+    return this.userData?.data?.phone?.toString() || '';
+  }
+
   initForm(): void {
     this.updateForm = this.formBuilder.group({
-      username: [this.userData.data.username],
-      email: [this.userData.data.email],
-      phone: [this.userData.data.phone.toString()],
-      image: ['']
+      username: [this.username],
+      email: [this.email],
+      phone: [this.phone]
     })
   }
 
   onUpdate() {
-    const updatedUser = this.updateForm.value
+    const updatedUser = {
+      username: this.updateForm.value.username,
+      email: this.updateForm.value.email,
+      phone: this.updateForm.value.phone
+    }
+
     this.userService.updateUser(this.currentUserId, updatedUser, this.image).subscribe(response => {
       console.log(response);
     }, (err) => {

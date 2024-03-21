@@ -21,9 +21,10 @@ export class UserService {
   updateUser(userId, body, image: File): Observable<UserAPI> {
 
     const formData: FormData = new FormData()
-
+    formData.append('username', body.username)
+    formData.append('email', body.email)
+    formData.append('phone', body.phone)
     formData.append('image', image)
-
     const headers: HttpHeaders = new HttpHeaders();
     headers.set('Content-Type', 'multipart/form-data')
     return this.http.patch<UserAPI>(`http://localhost:4000/api/user/${userId}`, formData, { headers })

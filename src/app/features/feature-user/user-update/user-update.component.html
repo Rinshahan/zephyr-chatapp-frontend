@@ -1,7 +1,8 @@
 <main class="min-h-screen flex justify-center items-center">
   <div class="flex flex-col items-center justify-center w-96">
     <!-- Update form -->
-    <form [formGroup]="updateForm" (ngSubmit)="onUpdate()" class="bg-white px-8 py-6 rounded-lg shadow-md space-y-4">
+    <form *ngIf="userData" [formGroup]="updateForm" (ngSubmit)="onUpdate()"
+      class="bg-white px-8 py-6 rounded-lg shadow-md space-y-4">
       <div class="flex justify-center items-center mb-4">
         <!-- Profile Picture Display -->
         <label for="fileInput" class="relative">
