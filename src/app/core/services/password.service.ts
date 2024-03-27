@@ -13,6 +13,6 @@ export class PasswordService {
       prevPassword,
       newPassword
     }
-    return this.http.patch(`http://localhost:4000/api/user/changepassword/${userId}`, passwords)
+    return this.http.patch(`https://zephyrchat.site/api/user/changepassword/${userId}`, passwords)
   }
 }

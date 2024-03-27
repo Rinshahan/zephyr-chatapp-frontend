@@ -12,7 +12,8 @@ export class UserAuthService {
 
   userLogin(userLoginData): Observable<UserLogin> {
     console.log(userLoginData);
-    return this.http.post<UserLogin>('http://zephyrchat.site:4000/api/user/login', userLoginData)
+    //return this.http.post<UserLogin>('http://localhost:4000/api/user/login', userLoginData)
+    return this.http.post<UserLogin>('https://zephyrchat.site/api/user/login', userLoginData)
   }
 
   userSignUp(userData, image: File) {
@@ -24,7 +25,8 @@ export class UserAuthService {
     formData.append('password', userData.password.toString())
     formData.append('image', image)
     const headers = new HttpHeaders()
-    return this.http.post(`http://localhost:4000/api/user/register`, formData, { headers })
+    //return this.http.post(`http://localhost:4000/api/user/register`, formData, { headers })
+    return this.http.post(`https://zephyrchat.site/api/user/register`, formData, { headers })
   }
 
   userLogout() {
@@ -34,10 +36,10 @@ export class UserAuthService {
 
   userOtpLogin(phoneNum: string): Observable<any> {
     const phoneNumber: string = `+91${phoneNum}`
-    return this.http.post<any>("http://localhost:4000/api/user/sendOtp", { phoneNumber })
+    return this.http.post<any>("https://zephyrchat.site/api/user/sendOtp", { phoneNumber })
   }
 
   verifyOtp(otp: string): Observable<UserLogin> {
-    return this.http.post<UserLogin>('http://localhost:4000/api/user/verifyOtp', { otp })
+    return this.http.post<UserLogin>('https://zephyrchat.site:4000/api/user/verifyOtp', { otp })
   }
 }
