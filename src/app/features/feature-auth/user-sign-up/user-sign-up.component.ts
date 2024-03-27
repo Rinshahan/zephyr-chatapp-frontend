@@ -29,7 +29,6 @@ export class UserSignUpComponent implements OnInit {
   }
 
   onFormSubmitted() {
-    this.reactiveForm.reset()
     const userData = {
       username: this.reactiveForm.value.username,
       email: this.reactiveForm.value.email,
@@ -42,6 +41,8 @@ export class UserSignUpComponent implements OnInit {
     }, (err) => {
       console.log(err);
     })
+
+    this.reactiveForm.reset()
   }
 
   selectImage(event) {

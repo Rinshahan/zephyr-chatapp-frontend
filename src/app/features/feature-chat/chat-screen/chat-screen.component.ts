@@ -51,7 +51,6 @@ export class ChatScreenComponent implements OnInit {
       })
       // load initial messages api calls
       this.chatService.getMessages(userId).subscribe((res) => {
-        console.log(res)
         if (res) {
           this.messageArray = res.message
         } else {
