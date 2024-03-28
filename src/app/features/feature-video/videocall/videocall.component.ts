@@ -171,6 +171,9 @@ export class VideocallComponent implements OnInit, AfterViewInit {
 
     this.peerConnection.close()
     this.peerConnection = null
+
+    this.localStream.getTracks().forEach(track => track.stop());
+    this.localVideo.nativeElement.srcObject = null;
   }
 
 
