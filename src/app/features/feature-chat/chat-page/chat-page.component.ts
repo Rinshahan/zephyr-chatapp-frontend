@@ -19,7 +19,6 @@ export class ChatPageComponent implements OnInit {
     this.sharedService.selectedUserId$.subscribe(userId => {
       this.selectedUserId = userId
     })
-    location.reload()
   }
 
 }
