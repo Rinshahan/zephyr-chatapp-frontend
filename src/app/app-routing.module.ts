@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'registration', loadChildren: () => import('./features/feature-auth/feature-auth.module').then(m => m.FeatureAuthModule) },
   { path: 'chatpage', loadChildren: () => import('./features/feature-chat/feature-chat.module').then(m => m.FeatureChatModule), canActivate: [authGuard] },
   { path: 'video/:id', loadChildren: () => import('./features/feature-video/feature-video.module').then(m => m.FeatureVideoModule), canActivate: [authGuard] },
-  { path: 'user/:id', loadChildren: () => import('./features/feature-user/feature-user.module').then(m => m.FeatureUserModule) }
+  { path: 'user/:id', loadChildren: () => import('./features/feature-user/feature-user.module').then(m => m.FeatureUserModule), canActivate: [authGuard] }
 ];
 
 @NgModule({

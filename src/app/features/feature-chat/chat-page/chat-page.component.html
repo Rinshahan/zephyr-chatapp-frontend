@@ -5,9 +5,9 @@
   </div>
 
   <div class="flex">
-    <router-outlet name="primary"></router-outlet>
+    <router-outlet name="primary chat-screen"></router-outlet>
   </div>
-  <div class="temporary" *ngIf="!selectedUserId">
+  <div class="temporary welome-page" *ngIf="!selectedUserId">
     <div
       class="bg-gradient-to-r from-sky-500 to-indigo-500 h-[600px] w-[1000px] rounded-r-lg flex justify-center items-center flex-col">
       <h2 class="text-white text-3xl font-bold">Select a user to start chatting!</h2>
