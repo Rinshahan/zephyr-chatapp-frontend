@@ -9,6 +9,7 @@ import { SharedService } from 'src/app/core/services/shared.service';
 })
 export class ChatPageComponent implements OnInit {
   users: User[]
+  @Input() selectedUser: User
   selectedUserId: string
   constructor(private sharedService: SharedService) {
 

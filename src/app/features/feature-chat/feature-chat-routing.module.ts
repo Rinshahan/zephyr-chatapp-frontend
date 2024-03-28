@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: '', component: ChatPageComponent, children: [
       {
-        path: 'chat/user/:id', component: ChatScreenComponent, outlet: 'primary', data: { preload: true }
+        path: 'chat/user/:id', component: ChatScreenComponent, outlet: 'primary'
       }
     ]
   },
