@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChil
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription, filter, from } from 'rxjs';
 import { ChatResponse, ChatSocket } from 'src/app/core/models/apis.model';
 import { Invitation, Offer, offerResponse } from 'src/app/core/models/interfaces';
@@ -34,6 +35,7 @@ export class ChatScreenComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private webrtc: WebrtcService,
+    private Toast: ToastrService
   ) {
   }
 
@@ -78,14 +80,16 @@ export class ChatScreenComponent implements OnInit {
 
     this.videoService.incomingInviteAnswer().subscribe((data) => {
       if (data.AnswerReceiver._id === this.currentUserId && data.inviteAnswerer._id === this.selectedUserId) {
-        window.alert(`${data.inviteAnswerer.username} Accepted You Invite`)
+        // window.alert(`${data.inviteAnswerer.username} Accepted You Invite`)
         this.router.navigate([`/video/${this.selectedUserId}`])
+        this.Toast.success(`${data.inviteAnswerer.username} Accepted Your Invite`)
       }
     })
 
     this.videoService.incomingInviteReject().subscribe((data) => {
       if (data.rejectReciever._id === this.currentUserId && data.inviteRejecter._id === this.selectedUserId) {
-        window.alert(`${data.inviteRejecter.username} Rejected Your Invite`)
+        // window.alert(`${data.inviteRejecter.username} Rejected Your Invite`)
+        this.Toast.error(`${data.inviteRejecter.username} Rejected Your Invite`)
       }
     })
 

@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { EmailValidator, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UserAuthService } from 'src/app/core/services/user-auth.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class UserSignUpComponent implements OnInit {
   reactiveForm: FormGroup;
   image: File;
 
-  constructor(private userAuth: UserAuthService, private router: Router) {
+  constructor(private userAuth: UserAuthService, private router: Router, private Toast: ToastrService) {
 
   }
 
@@ -38,8 +39,10 @@ export class UserSignUpComponent implements OnInit {
     this.userAuth.userSignUp(userData, this.image).subscribe((res) => {
       console.log(res)
       this.router.navigate(['/login'])
+      this.Toast.success("Account Creation Succesfull")
     }, (err) => {
       console.log(err);
+      this.Toast.error("Something Went Wrong!!!")
     })
 
     this.reactiveForm.reset()

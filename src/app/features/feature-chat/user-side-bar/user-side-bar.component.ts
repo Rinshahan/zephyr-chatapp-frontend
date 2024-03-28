@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UserResponse } from 'src/app/core/models/apis.model';
 import { User } from 'src/app/core/models/user.model';
 import { SharedService } from 'src/app/core/services/shared.service';
@@ -14,7 +15,7 @@ import { UserService } from 'src/app/core/services/user.service';
 export class UserSideBarComponent implements OnInit {
   users: User[]
   currentUserId
-  constructor(private userService: UserService, private sharedService: SharedService, private userAuth: UserAuthService, private router: Router) { }
+  constructor(private userService: UserService, private Toast: ToastrService, private sharedService: SharedService, private userAuth: UserAuthService, private router: Router) { }
   ngOnInit(): void {
     this.currentUserId = localStorage.getItem('currentUserId')
     this.userService.getAllUsers().subscribe((res: UserResponse) => {
@@ -33,6 +34,7 @@ export class UserSideBarComponent implements OnInit {
     this.sharedService.setSelectedUserId(null)
     this.userAuth.userLogout()
     this.router.navigate(['/login'])
+    this.Toast.warning("Logout Successfull")
   }
 
 

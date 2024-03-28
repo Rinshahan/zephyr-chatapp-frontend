@@ -6,7 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserAPI } from 'src/app/core/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { UserDeleteConfirmComponent } from 'src/app/shared/user-delete-confirm/user-delete-confirm.component';
-
+import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-user-update',
   templateUrl: './user-update.component.html',
@@ -23,7 +24,7 @@ export class UserUpdateComponent implements OnInit {
     email: new FormControl(''),
     phone: new FormControl('')
   });
-  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private dialogRef: MatDialog, private router: Router) {
+  constructor(private userService: UserService, private Toast: ToastrService, private location: Location, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private dialogRef: MatDialog, private router: Router) {
     this.userData = {
       status, data: {
         username: '',
@@ -71,8 +72,10 @@ export class UserUpdateComponent implements OnInit {
 
     this.userService.updateUser(this.currentUserId, updatedUser, this.image).subscribe(response => {
       console.log(response);
+      this.Toast.success("Profile updated successfully!")
     }, (err) => {
       console.log(err);
+      this.Toast.success("Error Updating Profile! Please Try Again")
     })
   }
 
@@ -103,11 +106,12 @@ export class UserUpdateComponent implements OnInit {
         this.userService.deleteUser(this.currentUserId).subscribe((data) => {
           console.log(data);
           this.router.navigate(['/login'])
+          this.Toast.warning("Account Deleted!")
         }, (err) => {
           console.log(err);
         })
       } else {
-        console.log("canceled")
+        this.Toast.info("Profile Deletion Cancelled")
       }
     })
   }

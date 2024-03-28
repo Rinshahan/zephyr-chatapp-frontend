@@ -31,6 +31,7 @@ export class UserLoginComponent {
       this.Toast.success("Login Successfull")
     }, (err) => {
       console.log(err.error.message);
+      this.Toast.error(err.error.message)
     });
   }
 
@@ -45,8 +46,10 @@ export class UserLoginComponent {
     this.userAuthService.userOtpLogin(phoneNumber).subscribe((res) => {
       console.log(res);
       this.otpSent = true;
+      this.Toast.success("Otp Send Successfully")
     }, (err) => {
       console.log(err)
+      this.Toast.error("Error Sending Otp")
     })
   }
 
@@ -57,8 +60,10 @@ export class UserLoginComponent {
       localStorage.setItem('token', res.token);
       localStorage.setItem('currentUserId', res.user._id);
       this.router.navigate(['/chatpage']);
+      this.Toast.success("OTP Verified Succesdfully")
     }, (err) => {
       console.log(err);
+      this.Toast.error("check Your OTP")
     })
     // Upon successful verification, you can proceed with login
     // For demonstration purposes, let's reset the state

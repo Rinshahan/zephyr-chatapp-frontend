@@ -6,6 +6,7 @@ import { IncomingcallmodalComponent } from './shared/incomingcallmodal/incomingc
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvitationAnswer, InvitationReject, InvitationResponse, answer, offerResponse } from './core/models/interfaces';
 import { WebrtcService } from './core/services/webrtc.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { WebrtcService } from './core/services/webrtc.service';
 })
 export class AppComponent implements OnInit {
   title = 'frontend';
-  constructor(private videoCallService: VideocallService, private dialogRef: MatDialog, private router: Router, private webrtc: WebrtcService) {
+  constructor(private videoCallService: VideocallService, private Toast: ToastrService, private dialogRef: MatDialog, private router: Router, private webrtc: WebrtcService) {
 
   }
   ngOnInit() {
@@ -41,14 +42,16 @@ export class AppComponent implements OnInit {
           receiver: data.invitationSender
         }
         this.videoCallService.acceptInvite(datas)
+        this.Toast.success("Call Accepted!.")
         this.router.navigate([`video/${data.invitationSender._id}`])
+
       } else {
         const datas = {
           rejecter: data.invitationReceiver,
           receiver: data.invitationSender
         }
         this.videoCallService.rejectInvite(datas)
-        console.log("call-Rejected")
+        this.Toast.error("Call Rejected")
       }
     })
   }
