@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.webrtc.createPeerConnection()
     const currentUserId = localStorage.getItem('currentUserId')
     this.videoCallService.incomingInvitation().subscribe((data: InvitationResponse) => {
       console.log(data)

@@ -42,9 +42,8 @@ export class UserSignUpComponent implements OnInit {
       this.Toast.success("Account Creation Succesfull")
     }, (err) => {
       console.log(err);
-      this.Toast.error("Something Went Wrong!!!")
+      this.Toast.error("Email or phone number already in use. Try another one.")
     })
-
     this.reactiveForm.reset()
   }
 
