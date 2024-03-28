@@ -73,6 +73,7 @@ export class UserUpdateComponent implements OnInit {
     this.userService.updateUser(this.currentUserId, updatedUser, this.image).subscribe(response => {
       console.log(response);
       this.Toast.success("Profile updated successfully!")
+      location.reload()
     }, (err) => {
       console.log(err);
       this.Toast.success("Error Updating Profile! Please Try Again")
