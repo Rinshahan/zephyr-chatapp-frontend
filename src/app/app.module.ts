@@ -12,6 +12,8 @@ import { MatDialogModule } from '@angular/material/dialog'
 import { MatButtonModule } from '@angular/material/button';
 import { WaitinguseracceptanceComponent } from './shared/waitinguseracceptance/waitinguseracceptance.component';
 import { UserDeleteConfirmComponent } from './shared/user-delete-confirm/user-delete-confirm.component';
+import { ToastrModule } from 'ngx-toastr'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +28,11 @@ import { UserDeleteConfirmComponent } from './shared/user-delete-confirm/user-de
     BrowserAnimationsModule,
     MatSlideToggleModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      progressBar: true
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true },

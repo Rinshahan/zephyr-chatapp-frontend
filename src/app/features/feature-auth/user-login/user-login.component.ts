@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import UserLogin from 'src/app/core/models/userLogin.model';
 import { UserAuthService } from 'src/app/core/services/user-auth.service';
 
@@ -19,7 +20,7 @@ export class UserLoginComponent {
 
   phoneNumberInvalid: boolean = false;
 
-  constructor(private userAuthService: UserAuthService, private router: Router) { }
+  constructor(private userAuthService: UserAuthService, private router: Router, private Toast: ToastrService) { }
 
   onFormSubmitted() {
     this.userLoginData = this.form.value;
@@ -27,6 +28,7 @@ export class UserLoginComponent {
       localStorage.setItem('token', res.token);
       localStorage.setItem('currentUserId', res.user._id);
       this.router.navigate(['/chatpage']);
+      this.Toast.success("Login Successfull")
     }, (err) => {
       console.log(err.error.message);
     });
