@@ -29,6 +29,7 @@ export class UserLoginComponent {
       localStorage.setItem('currentUserId', res.user._id);
       this.router.navigate(['/chatpage']);
       this.Toast.success("Login Successfull")
+      location.reload()
     }, (err) => {
       console.log(err.error.message);
       this.Toast.error(err.error.message)
